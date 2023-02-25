@@ -1,0 +1,355 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>产品详情</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/chanpin_xiangqing.css">
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>
+<link rel="stylesheet" type="text/css" href="lunbo.css">	
+</head>
+
+<body>
+<div id="app"> 	
+    <!--头部菜单-->
+	<div class="toubu">
+		<div class="toubu_caidan toubu_caidan_xuanzhong">商品</div>
+		<a id="lj02" class="toubu_caidan">详情</a>
+		<a id="lj03" class="toubu_caidan">评论</a>
+	</div>
+	<script>
+		//下面代码获取页面的参数
+		urlinfo = window.location.href  //获取当前页面的url
+		console.log(urlinfo);
+		len = urlinfo.length; //获取url的长度
+		offset =urlinfo.indexOf("?");//设置参数字符串开始的位置
+		neirong = urlinfo.substr(offset+1,len);//取出参数字符串 这里会获得类似“id=1”这样的字符串
+		console.log(neirong);
+		neirong1 = neirong.split("&");//对获得的参数字符串按照“=”进行分割
+
+		cs1 = neirong1[0].split("=");
+		cs1_mc = cs1[0];//得到参数名字
+		cs1_zhi = cs1[1];//得到参数值
+		console.log("参数1的名称："+cs1_mc + " | 参数1的值："+cs1_zhi);
+
+		cs2 = neirong1[1].split("=");
+		cs2_mc = cs2[0];//得到参数名字
+		cs2_zhi = decodeURI(cs2[1]);//得到参数值
+		console.log("参数2的名称："+cs2_mc + " | 参数2的值："+cs2_zhi);	
+        
+		document.getElementById("lj02").href="chanpin_xiangqing2.html?id=" + cs1_zhi + "&mc=" + cs2_zhi;
+		document.getElementById("lj03").href="chanpin_xiangqing3.html?id=" + cs1_zhi + "&mc=" + cs2_zhi;
+	</script>	
+	
+<div class="qukuai">	
+	
+	<!--轮播图片-->
+	<div class="carousel-wrap">
+		<transition-group tag="ul" class='slide-ul' name="list">
+			<li v-for="(list,index) in slideList" :key="index" v-show="index===currentIndex" @mouseenter="stop" @mouseleave="go">
+				<a :href="list.clickUrl" >
+					<img :src="list.image" :alt="list.desc">
+				</a>
+			</li>
+		</transition-group>
+		<div class="carousel-items">
+			<span v-for="(item,index) in slideList.length" :class="{'active':index===currentIndex}" @mouseover="change(index)"></span>
+		</div>
+	</div>	
+	
+	
+	<!--产品名称（标题）-->
+	<div class="biaoti">
+		<div class="biaoti_zhu">{{cp_mingcheng}}</div>
+		<div class="biaoti_jiage">¥ {{jiage}}</div>
+		<div class="biaoti_fu">{{cp_jianjie}}</div>
+	</div>
+	
+	<div class="gaodu10"></div>
+	<!--会员等级和价格-->
+	<div class="huiyuan">
+		<div class="huiyuan_biaoti">会员</div>
+		<div class="huiyuan_dengji">银牌会员</div>
+		<div class="huiyuan_jiage">享受价格：¥ 22.00</div>
+	</div>
+	
+	<!--附加属性-->
+	<div class="gaodu10"></div>
+	<div class="fujia">
+		<div class="fujia_xiangmu">
+			<div class="fujia_xiangmu_zuo">库存：{{cp_kucun}} 件</div>
+			<div class="fujia_xiangmu_you">限购：{{xiangou_shuliang}}</div>
+		</div>
+		<div class="fujia_xiangmu">
+			<div class="fujia_xiangmu_zuo">已销：{{cp_yixiaoshou}} 件</div>
+			<div class="fujia_xiangmu_you">评论： 条</div>
+		</div>		
+	</div>
+	
+	<!--运费-->
+	<div class="gaodu10"></div>
+	<div class="fujia2">
+		<div class="fujia2_xiangmu">
+			<div class="fujia2_xiangmu_zuo">送至</div>
+			<div class="fujia2_xiangmu_you">浙江 杭州 余杭区</div>
+		</div>
+		<div class="fujia2_xiangmu">
+			<div class="fujia2_xiangmu_zuo">运费</div>
+			<div class="fujia2_xiangmu_you">免运费</div>
+		</div>		
+	</div>
+	<div class="gaodu45"></div>
+	
+</div>
+	
+	
+	<!--底部菜单-->
+	<div class="dibu" id="dl_yes">
+		<a class="dibu_shouye" href="index.html">
+			<img src="img/shouye.png" class="dibu_shouye_img" />
+			<p class="dibu_shouye_biaoti">首页</p>
+		</a>
+		<a class="dibu_shoucang" v-on:click="shoucang()">
+			<img src="img/shoucang.png" class="dibu_shoucang_img" />
+			<p class="dibu_shoucang_biaoti" >收藏</p>
+		</a>
+		<a class="dibu_gouwuche" href="gouwuche.html">
+			<img src="img/gouwuche.png" class="dibu_gouwuche_img" />
+			<p class="dibu_gouwuche_biaoti">购物车</p>
+		</a>	
+		<div class="dibu_jiaGWC" v-on:click="gouwuche()">加入购物车</div>
+		<div class="dibu_goumai" v-on:click="goumai()">立即购买</div>
+	</div>
+	
+	<div class="dibu" id="dl_no">
+		<a class="dibu_shouye" href="index.html">
+			<img src="img/shouye.png" class="dibu_shouye_img" />
+			<p class="dibu_shouye_biaoti">首页</p>
+		</a>
+		<a class="dibu_shoucang" onClick="denglu()">
+			<img src="img/shoucang.png" class="dibu_shoucang_img" />
+			<p class="dibu_shoucang_biaoti" >收藏</p>
+		</a>
+		<a class="dibu_gouwuche"  onClick="denglu()">
+			<img src="img/gouwuche.png" class="dibu_gouwuche_img" />
+			<p class="dibu_gouwuche_biaoti">购物车</p>
+		</a>	
+		<div class="dibu_jiaGWC"  onClick="denglu()">加入购物车</div>
+		<div class="dibu_goumai"  onClick="denglu()">立即购买</div>
+	</div>
+	
+	<script>
+		function denglu(){
+			if(confirm("请登录")){
+				window.location.href = "u_login.html"
+			}
+		}
+		
+		if(localStorage.u_login=="yes"){
+			document.getElementById("dl_yes").style.display="";
+			document.getElementById("dl_no").style.display="none";
+		}else{
+			document.getElementById("dl_yes").style.display="none";
+			document.getElementById("dl_no").style.display="";	
+		}
+	
+	</script>
+	
+	
+	
+</div><!--app-->	
+	
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		//轮播代码
+		slideList: [
+			{
+				"clickUrl": "#",
+				"desc": "图片轮播说明1",
+				"image": "img/ban1.jpg"
+			},
+			{
+				"clickUrl": "#",
+				"desc": "图片轮播说明2",
+				"image": "img/ban2.jpg"
+			},
+			{
+				"clickUrl": "#",
+				"desc": "图片轮播说明3",
+				"image": "img/ban3.jpg"
+			}
+		],
+		currentIndex: 0,
+		timer: '',
+		  
+		  cp_tupian:"",  
+		  cp_tupian1:"",  
+		  cp_tupian2:"",
+		  cp_tupian3:"",
+		  cp_tupian4:"",
+		  cp_mingcheng:"",
+		  jiage:"",
+		  cp_jianjie:"",
+		  cp_kucun:"",
+		  xiangou_shuliang:"",
+		  cp_yixiaoshou:""		  
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.GetCPxinxi();
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		    //轮播代码
+			go() {
+				this.timer = setInterval(() => {
+					this.autoPlay()
+				}, 3000)
+			},
+			stop() {
+				clearInterval(this.timer)
+				this.timer = null
+			},
+			change(index) {
+				this.currentIndex = index
+			},
+			autoPlay() {
+				this.currentIndex++
+				if (this.currentIndex > this.slideList.length - 1) {
+					this.currentIndex = 0
+				}
+			},
+		  
+		   //获取产品简介信息
+		   GetCPxinxi:function(){
+				axios.get('http://vue.yaoyiwangluo.com/wx_sp_info-a.asp',
+							{
+								params:{
+									cp_id:cs1_zhi    //参数1
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					//console.log(response.data);
+					this.cp_tupian = response.data.cp_tupian;
+					this.cp_tupian1 = response.data.cp_tupian1;
+					this.cp_tupian2 = response.data.cp_tupian2;
+					this.cp_tupian3 = response.data.cp_tupian3;
+					this.cp_tupian4 = response.data.cp_tupian4;
+					this.cp_mingcheng = response.data.cp_mingcheng;
+					this.jiage = response.data.jiage;
+					this.cp_jianjie = response.data.cp_jianjie;
+					this.cp_kucun = response.data.cp_kucun;
+					this.xiangou_shuliang = response.data.xiangou_shuliang;
+					this.cp_yixiaoshou = response.data.cp_yixiaoshou;
+					
+					//修改轮播图片
+					this.$set(this.slideList[0],"image",response.data.cp_tupian);
+					this.$set(this.slideList[1],"image",response.data.cp_tupian1);
+					
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});				   
+		   },
+		   //收藏
+		   shoucang:function(){
+				axios.get('http://vue.yaoyiwangluo.com/wx_shoucang_add.asp',
+							{
+								params:{
+									cs_uid:localStorage.u_id,    //参数1
+									cs_cpid:cs1_zhi              //参数2
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					console.log(response);
+					console.log(response.data);
+					if(response.data.zt=="yes"){
+						alert("收藏成功");
+					}
+					if(response.data.zt=="no"){
+						alert(response.data.xinxi);
+					}					
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});		   
+		   },
+		  
+		   //加购物车
+		   gouwuche:function(){
+				axios.get('http://vue.yaoyiwangluo.com/wx_gwc_add.asp',
+							{
+								params:{
+									cs_uid:localStorage.u_id,    
+									cs_cpid:cs1_zhi,
+									cs_cp_mingcheng:cs2_zhi,
+									cs_jiage:this.jiage
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					if(response.data.zt=="yes"){
+						alert("加入购物车成功");
+					}
+					if(response.data.zt=="no"){
+						alert(response.data.xinxi);
+					}					
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});	   
+		   },
+		  
+		   //立即购买
+		   goumai:function(){
+				axios.get('http://vue.yaoyiwangluo.com/wx_gwc_add.asp',
+							{
+								params:{
+									cs_uid:localStorage.u_id,    
+									cs_cpid:cs1_zhi,
+									cs_cp_mingcheng:cs2_zhi,
+									cs_jiage:this.jiage
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					if(response.data.zt=="yes"){
+						alert("加入购物车成功");
+						window.location.href="gouwuche.html";
+					}
+					if(response.data.zt=="no"){
+						alert(response.data.xinxi);
+						window.location.href="gouwuche.html";
+					}					
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});	 
+		   },
+		  
+	  },	
+	   //轮播代码
+       created() {
+         this.$nextTick(() => {
+           this.timer = setInterval(() => {
+             this.autoPlay()
+           }, 3000)
+         })
+       }			
+	})
+</script>
+
+</body>
+</html>

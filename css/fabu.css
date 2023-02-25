@@ -1,0 +1,67 @@
+.fabu_img{
+	width:400px;
+	height:300px;
+	display:block;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+.fabu_des{
+	display:block;
+	margin-bottom:10px;
+}
+.fabu_area{
+	flex-grow: 1;
+	background-color: white;
+	line-height: 40px;
+	display:block;
+	margin-bottom:10px;
+}
+.file{
+	margin-left:10px;
+}
+.fabu{
+	display: flex;
+	align-items: center;
+	background-color: #f2f2f2;
+	border-bottom: 1px solid #bbbbbb;
+}
+.fabu_biaoti{
+	width: 5em;
+	background-color: white;
+	height: 40px;
+	line-height: 40px;
+	padding-left: 10px;
+}
+.fabu_shuru{
+	flex-grow: 1;
+	background-color: white;
+	height: 40px;
+	line-height: 40px;
+}
+.fabu_shuru_input{
+	width: 90%;
+	height: 25px;
+	line-height: 25px;
+	outline: none;
+	border: none;
+}
+.fabu_yanzhenma{
+	color: green;
+	width: 6em;
+	text-align: center;
+}
+
+.fabu_queren{
+	background-color: #f2f2f2;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+.fabu_btn{
+	border:none;
+	background-color: red;
+	color: white;
+	padding: 10px;
+	border-radius: 5px;
+}

@@ -1,0 +1,304 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<!--模拟手机界面-->
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/shouye.css">
+<link rel="stylesheet" href="css/dibu_caidan.css">
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>
+<link rel="stylesheet" type="text/css" href="lunbo.css">
+<style>
+	
+</style>
+</head>
+
+<body> 
+<div id="app">	
+<!--轮播图片-->
+<div class="carousel-wrap">
+    <transition-group tag="ul" class='slide-ul' name="list">
+        <li v-for="(list,index) in slideList" :key="index" v-show="index===currentIndex" @mouseenter="stop" @mouseleave="go">
+            <a :href="list.clickUrl" >
+                <img :src="list.image" :alt="list.desc" class="lbpic">
+            </a>
+        </li>
+    </transition-group>
+    <div class="carousel-items">
+        <span v-for="(item,index) in slideList.length" :class="{'active':index===currentIndex}" @mouseover="change(index)"></span>
+    </div>
+</div>	
+
+<!--导航快捷菜单-->
+<div class="caidan">
+	<a href="chanpin_list.html" class="caidan_lianjie">
+		<img src="img/dianzichanpin.png"  class="caidan_img" />
+		<p>电子产品</p>
+	</a>
+	<a href="xinwen_list.html?cs_lxid=11&cs_lxmc=教材课本" class="caidan_lianjie">
+		<img src="img/jiaocaikeben.png"  class="caidan_img" />
+		<p>教材课本</p>
+	</a>
+	<a href="xinwen_list.html?cs_lxid=10&cs_lxmc=发布" class="caidan_lianjie">
+		<img src="img/fabu.png"  class="caidan_img" />
+		<p>发布</p>
+	</a>
+	<a href="xinwen_list.html?cs_lxid=10&cs_lxmc=洗漱用品" class="caidan_lianjie">
+		<img src="img/xishu.png"  class="caidan_img" />
+		<p>洗漱用品</p>
+	</a>
+	
+	<a href="xxx.html" class="caidan_lianjie" id="yhzx_yes">
+		<img src="img/shipin.png"  class="caidan_img" />
+		<p>饰品</p>
+	</a>
+	<a onClick="denglu0()" class="caidan_lianjie" id="yhzx_no">
+		<img src="img/shipin.png"  class="caidan_img" />
+		<p>饰品</p>
+	</a>		
+	<script>
+		function denglu0(){
+			if(confirm("请登录")){
+				window.location.href = "u_login.html"
+			}
+		}
+		
+		if(localStorage.u_login=="yes"){
+			document.getElementById("yhzx_yes").style.display="";
+			document.getElementById("yhzx_no").style.display="none";
+		}else{
+			document.getElementById("yhzx_yes").style.display="none";
+			document.getElementById("yhzx_no").style.display="";	
+		}
+	</script>
+	
+</div>
+
+<!--区块标题-->
+<div class="qukuai">
+	<p class="qukuai_zuo"></p>
+	<p class="qukuai_zhong">最新上架</p>
+	<a href="#chanpin_list.html" class="qukuai_you"> 更多> </a>
+</div>
+<!--最新上架产品-->
+<div class="cp_zuixin">
+	<a v-bind:href="'chanpin_xiangqing.html?id='+zxcp.cp_id+'&mc='+zxcp.cp_mingcheng" class="cp_lianjie" v-for="zxcp in zxcps">
+		<img  v-bind:src="zxcp.cp_tupian" class="cp_img" />
+		<p class="cp_mc">{{zxcp.cp_mingcheng}}</p>
+		<p class="cp_mc2">¥ {{zxcp.jiage}}</p>
+	</a>
+</div>
+
+<!--推荐-->
+<div class="qukuai2">
+	<p class="qukuai_zuo"></p>
+	<p class="qukuai_zhong">精品推荐</p>
+	<a href="#chanpin_list.html" class="qukuai_you"> 更多> </a>
+</div>
+<div class="cp2_zuixin">
+	<a v-bind:href="'chanpin_xiangqing.html?id='+tjcp.cp_id+'&mc='+tjcp.cp_mingcheng" class="cp2_lianjie" v-for="tjcp in tjcps">
+		<img  v-bind:src="tjcp.cp_tupian" class="cp2_img" />
+		<p class="cp2_mc">{{tjcp.cp_mingcheng}}</p>
+		<p class="cp_mc2">¥ {{tjcp.jiage}}</p>
+	</a>
+</div>
+<br><br><br>
+
+<!--底部导航菜单-->
+<div class="dibu_caidan" id="dl_yes">
+	<a href="index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/a-on.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti dibu_caidan_xiangmu_biaoti_xuanzhong">首页</p>
+	</a>
+	<a href="chanpin_fenlei.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/b-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">分类</p>
+	</a>
+	<a href="gouwuche.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/c-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">购物车</p>
+		<!--p class="gouwucheshu"></p-->
+	</a>
+	<a href="u_index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/d-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">我的</p>
+	</a>
+</div>
+
+
+<div class="dibu_caidan" id="dl_no">
+	<a href="index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/a-on.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti dibu_caidan_xiangmu_biaoti_xuanzhong">首页</p>
+	</a>
+	<a href="chanpin_fenlei.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/b-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">分类</p>
+	</a>
+	<a onClick="denglu()" class="dibu_caidan_xiangmu" style="cursor:pointer;">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/c-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">购物车</p>
+		<!--p class="gouwucheshu"></p-->
+	</a>
+	<a onClick="denglu()" class="dibu_caidan_xiangmu" style="cursor: pointer">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/d-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">我的</p>
+	</a>
+</div>
+	<script>
+		function denglu(){
+			if(confirm("请登录")){
+				window.location.href = "u_login.html"
+			}
+		}
+		if(localStorage.u_login=="yes"){
+			document.getElementById("dl_yes").style.display="";
+			document.getElementById("dl_no").style.display="none";
+		}else{
+			document.getElementById("dl_yes").style.display="none";
+			document.getElementById("dl_no").style.display="";	
+		}
+	
+	</script>
+</div> <!--app-->
+
+<script>
+	new Vue({
+		el:"#app",
+		data:{
+			//轮播代码
+			slideList: [
+				{
+					"clickUrl": "#",
+					"desc": "图片轮播说明1",
+					"image": "img/ban1.jpg"
+				},
+				{
+					"clickUrl": "#",
+					"desc": "图片轮播说明2",
+					"image": "img/ban2.jpg"
+				},
+				{
+					"clickUrl": "#",
+					"desc": "图片轮播说明3",
+					"image": "img/ban3.jpg"
+				}
+			],
+			currentIndex: 0,
+			timer: '',			
+			
+			zxcps:[],  //最新产品列表
+			tjcps:[]	//推荐产品列表
+		},
+		//页面初始化要执行的
+		mounted:function(){
+			this.GetCps_zuixin();
+			this.GetCps_tuijian();
+		},
+		//自定义的函数
+		methods:{
+		    //轮播代码
+			go() {
+				this.timer = setInterval(() => {
+					this.autoPlay()
+				}, 3000)
+			},
+			stop() {
+				clearInterval(this.timer)
+				this.timer = null
+			},
+			change(index) {
+				this.currentIndex = index
+			},
+			autoPlay() {
+				this.currentIndex++
+				if (this.currentIndex > this.slideList.length - 1) {
+					this.currentIndex = 0
+				}
+			},		
+			
+			GetCps_zuixin:function(){
+				var data=[
+					{cp_id: 650,
+					cp_mingcheng: "牙膏",
+					cp_tupian: "tupian/yagao.jpg",
+					jiage: "15"},
+					
+					{cp_id: 651,
+					cp_mingcheng: "雨伞",
+					cp_tupian: "tupian/yusan.jpg",
+					jiage: "25"},
+					
+					{cp_id: 652,
+					cp_mingcheng: "A4纸",
+					cp_tupian: "tupian/A4zhi.jpg",
+					jiage: "5"},
+					
+					{cp_id: 650,
+					cp_mingcheng: "牙膏",
+					cp_tupian: "tupian/yagao.jpg",
+					jiage: "15"},
+					
+					];
+				//console.log(data);
+				this.zxcps=data;
+			},
+			/*
+			//加载最新产品列表
+ 			GetCps_zuixin:function(){
+				axios.get('')
+				  .then(function (response) {
+					//response.data 返回值,下面插入要执行的代码
+					console.log(response.data)
+					this.zxcps = response.data;
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});
+			},
+			*/
+			
+			//加载推荐产品列表
+			GetCps_tuijian:function(){
+				var data=[
+				{cp_id: 650,
+				cp_mingcheng: "牙膏",
+				cp_tupian: "tupian/yagao.jpg",
+				jiage: "15"},
+				
+				{cp_id: 651,
+				cp_mingcheng: "雨伞",
+				cp_tupian: "tupian/yusan.jpg",
+				jiage: "25"},
+				{cp_id: 652,
+				cp_mingcheng: "A4纸",
+				cp_tupian: "tupian/A4zhi.jpg",
+				jiage: "5"},
+				];
+				
+				this.tjcps=data;
+			},
+			
+			/*
+			//加载推荐产品列表
+			GetCps_tuijian:function(){
+				axios.get('')
+				  .then(function (response) {
+					//response.data 返回值,下面插入要执行的代码
+					//console.log(response.data);
+					this.tjcps = response.data;
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});
+			},
+		},
+		*/
+	    },
+	})
+</script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+@charset "utf-8";
+/* 购物车-顶部导航-状态 */
+.caidan{display: flex; justify-content: center;}
+.caidan_putong{flex-grow: 1; text-align: center;padding: 5px;}
+.caidan_xuanzhong{
+	font-weight: bold; color: red;border-bottom: 3px solid red;
+}
+.huise10{height: 10px;background-color: #f2f2f2;}
+
+/* 订单 */
+.dingdan{width: 100%;}
+
+/* 订单-单号栏 */
+.dingdan_danhao{display: flex;padding: 10px; border-bottom: 1px solid #f2f2f2; background-color: aliceblue;}
+.dingdan_danhao_zuo{flex: 1;}
+.dingdan_danhao_you{}
+
+/* 订单-产品 */
+.dingdan_chanpin{display: flex;padding: 5px;border-bottom: 1px dotted #f2f2f2;}
+
+.dingdan_chanpin_tupian{padding: 5px;}
+.dingdan_chanpin_tupian_img{width: 80px;height: 80px;border:1px solid #f3f3f3;box-shadow: 2px 2px 2px grey;}
+
+.dingdan_chanpin_xinxi{ padding: 3px;}
+.dingdan_chanpin_xinxi_biaoti{}
+
+.dingdan_chanpin_xinxi_fujia{font-size: 14px; color: dimgray;padding: 3px 0 3px 0;}
+.dingdan_chanpin_xinxi_shuliang{display: flex;}
+.dingdan_chanpin_xinxi_shuliang_zuo{flex-grow: 1;font-weight: bold;color: red;}
+.dingdan_chanpin_xinxi_shuliang_you{}
+
+
+/* 订单-结算信息 */
+.dingdan_jiesuan{display: flex;padding: 5px;justify-content: flex-end;}
+.dingdan_jiesuan_txt1{font-size: 14px;color: dimgray;}
+.dingdan_jiesuan_txt2{color: red;}
+
+/* 订单-操作信息 */
+.dingdan_caozuo{display: flex;justify-content: flex-end;background-color: #f2f2f2;}
+.dingdan_caozuo_xiangmu{text-decoration: none;color: dimgray;border:1px solid grey;margin: 5px;padding: 5px;border-radius: 5px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

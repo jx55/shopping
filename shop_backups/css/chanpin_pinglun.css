@@ -1,0 +1,19 @@
+@charset "utf-8";
+/* CSS Document */
+.pinglun_xing{display: flex;border-bottom: 1px solid #bbbbbb;padding: 10px;}
+.pinglun_xing_biaoti{}
+.pinglun_xing_tupian{}
+.pinglun_xing_tupian_img{width: 19px;height: 19px;padding-left: 10px;}
+
+.pinglun_neirong{padding: 10px; border-bottom: 1px solid #f2f2f2;}
+.pinglun_neirong_txt{width: 100%;}
+
+.pinglun_tupian{}
+.pinglun_tupian_biaoti{background-color: #f2f2f2;padding: 10px;}
+.pinglun_tupians{}
+.pinglun_tupians_img{width: 85px; height: 85px;margin: 5px;}
+
+.caozuo{padding: 10px;}
+.caozuo_baocun{}
+.caozuo_baocun_btn{width: 100%;padding: 5px;background-color: orange;border: none;color: white;font-size: 18px;border-radius: 5px;}
+

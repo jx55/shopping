@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>黄菊华：H5+CSS3商城界面实战-购物车</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/xnixi_xiangqing.css">	
+	<script src="vue2.2.2.min.js"></script>
+	<script src="axios.min.js"></script>
+</head>
+
+<body>
+	<div id="app"></div>
+<script>
+	//下面代码获取页面的参数
+	urlinfo = window.location.href  //获取当前页面的url
+	console.log(urlinfo);
+	len = urlinfo.length; //获取url的长度
+	offset =urlinfo.indexOf("?");//设置参数字符串开始的位置
+	neirong = urlinfo.substr(offset+1,len);//取出参数字符串 这里会获得类似“id=1”这样的字符串
+	console.log(neirong);
+	neirong1 = neirong.split("&");//对获得的参数字符串按照“=”进行分割
+	
+	cs1 = neirong1[0].split("=");
+	cs1_mc = cs1[0];//得到参数名字
+	cs1_zhi = cs1[1];//得到参数值
+	console.log("参数1的名称："+cs1_mc + " | 参数1的值："+cs1_zhi);
+	
+ 
+</script>	
+ 
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.dizhi_del();
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  dizhi_del:function(){
+				axios.get('http://vue.yaoyiwangluo.com/wx_dizhi_Del.asp',
+							{
+								params:{
+									cs_uid:localStorage.u_id,    //参数1
+									cs_dizhiid:cs1_zhi           //参数2
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					if(response.data.zt=="yes"){
+						alert("地址删除成功");
+						window.location = "u_dizhi_list.html";
+					}
+					if(response.data.zt=="no"){
+						alert(response.data.xinxi);
+						window.location = "u_dizhi_list.html";
+					}					
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});				  
+		  }
+	  },		
+	})
+</script>
+</body>
+</html>

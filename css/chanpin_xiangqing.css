@@ -1,0 +1,151 @@
+@charset "utf-8";
+/* CSS Document */
+*{padding: 0;margin: 0;}
+html,body{height: 100%;background-color: #f2f2f2;}
+.gaodu10{height: 10px}
+.gaodu45{height: 45px}
+.qukuai{height:80%;overflow-y: auto;}
+
+/* 头部菜单 */
+.toubu{ background: linear-gradient(#f2f2f2,#fbfbfb,#f2f2f2);display: flex;justify-content: center;
+}
+.toubu_caidan{flex-grow: 1; text-align: center;padding: 10px;}
+.toubu_caidan_xuanzhong{
+	color: red; font-weight: bold;border-bottom: 2px solid red;
+}
+
+/* 轮播样式 */
+.lunbo {
+}
+.lunbo_img {
+    width: 100%;
+	height: 250px;
+}
+
+/*产品名称（标题）*/
+.biaoti{padding: 10px;background-color: white;}
+.biaoti_zhu{font-weight: bold;}
+.biaoti_jiage{color: red;padding-top: 5px;padding-bottom: 5px;}
+.biaoti_fu{font-size: 14px;color: dimgray;}
+
+/*会员等级和价格*/
+.huiyuan{background-color: white;display: flex;padding: 10px;align-items: center;}
+.huiyuan_biaoti{padding-right: 10px;color: dimgray;}
+.huiyuan_dengji{background-color: orangered;color: white;padding: 5px;border-radius: 5px;}
+.huiyuan_jiage{flex-grow: 1;text-align: right;}
+
+/*附加属性*/
+.fujia{background-color: white; padding: 5px;}
+.fujia_xiangmu{display: flex;font-size: 14px;color: dimgray;padding: 5px;}
+.fujia_xiangmu_zuo{width: 50%;}
+.fujia_xiangmu_you{width: 50%;}
+
+/*运费*/
+.fujia2{background-color: white; padding: 5px;}
+.fujia2_xiangmu{display: flex;font-size: 14px;color: dimgray;padding: 5px;}
+.fujia2_xiangmu_zuo{width: 3em;}
+.fujia2_xiangmu_you{font-size: 15px; color: black;}
+
+
+/*************详情*************************/
+.neirong{ padding: 10px;}
+
+/*************评论*************************/
+.pinglun{background-color: white;}
+
+.pinglun_tou{padding: 10px;display: flex;align-items: center;border-bottom: 1px solid #f2f2f2;}
+.pinglun_tou_img{width: 20px; height: 20px;border-radius: 50%;}
+.pinglun_tou_nicheng{flex-grow: 1;padding-left: 10px;font-size: 14px; color: dimgray;}
+.pinglun_tou_shijian{font-size: 15px;color: dimgray;}
+
+.pinglun_zhong{padding: 10px;}
+.pinglun_zhong_xing{}
+.pinglun_zhong_xing_img{width: 15px;height: 15px;}
+.pinglun_zhong_neirong{font-size: 14px;color: dimgray;}
+
+.pinglun_wei{padding: 5px 0 3px 5px;;}
+.pinglun_wei_img{width: 66px; height: 66px;padding: 5px; border:1px solid #f2f2f2;border-radius: 5px;box-shadow: 2px 2px 5px #dcdcdc;}
+
+
+
+
+
+
+
+
+
+/*底部菜单*/
+.dibu{display: flex;justify-content: center;align-items: center;height: 45px;position: fixed;bottom: 0px;width: 100%;background-color: white;box-sizing: border-box;border-top: 1px solid #f2f2f2;margin: 0;padding: 0;}
+
+.dibu_shouye{width: 12%;text-decoration: none;color: dimgray;display: flex;flex-direction: column;align-items: center;cursor:pointer;}
+.dibu_shouye_img{width: 22px;padding-top: 3px;}
+.dibu_shouye_biaoti{font-size: 14px;height: 20px;}
+
+.dibu_shoucang{width: 13%;text-decoration: none;color: dimgray;display: flex;flex-direction: column;align-items: center;cursor: pointer;}
+.dibu_shoucang_img{width: 22px;}
+.dibu_shoucang_biaoti{font-size: 14px;}
+
+.dibu_gouwuche{width: 15%;text-decoration: none;color: dimgray;display: flex;flex-direction: column;align-items: center;cursor:pointer;}
+.dibu_gouwuche_img{width: 22px;}
+.dibu_gouwuche_biaoti{font-size: 14px;}
+
+.dibu_jiaGWC{width: 33%;text-align: center;background-color: orange;height: 45px;line-height: 45px; color: white;cursor:pointer;}
+.dibu_goumai{width: 27%;text-align: center;background-color: orangered;height: 45px;line-height: 45px;color: white;cursor:pointer;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

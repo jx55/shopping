@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/gouwuche.css">
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<!--购物车-顶部导航-->
+<div class="dingbu">
+	<a href="index.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">购物车</p>
+</div>
+
+
+<div v-for="(cp,index) in cps">	
+	<!--购物车-产品列表-->
+	<div class="gwc_cp">
+			<!--购物车-产品列表-单号栏-->
+		<div class="dingdan_hao">
+			<div class="dingdan_hao_zuo">时间：{{cp.shijian_gouwuche}}</div>
+			<a href="#" class="dingdan_hao_you">
+				<img src="img/del.png" alt="" class="dingdan_hao_you_img" />
+			</a>
+		</div>
+
+		<!--购物车-->
+		<div class="gwc_cp_xiangmu">
+			<!--购物车-左侧-选择项-->
+			<div class="gwc_cp_xiangmu_xuanzhhe">
+				<input type="checkbox" class="gwc_cp_xiangmu_xuanzhhe_chk" :value="cp.gwc_id"  name="xuanxiangs" @click="ck(index)" />
+			</div>
+			<!--购物车-中间-图片-->
+			<div class="gwc_cp_xiangmu_tupian">
+				<img  v-bind:src="cp.cp_tupian"  class="gwc_cp_xiangmu_tupian_img" />
+			</div>
+			<!--购物车-右侧-产品信息-->
+			<div class="gwc_cp_xiangmu_xinxi">
+				<div class="gwc_cp_xiangmu_xinxi_biaoti">
+					{{cp.cp_mingcheng}}
+				</div>
+				<div class="gwc_cp_xiangmu_xinxi_shuxing">
+					剩余：{{cp.cp_kucu}} |  已售：{{cp.cp_yixiaoshou}}
+				</div>
+				<!--购物车-右侧-产品信息-价格-->
+				<div class="gwc_cp_xiangmu_xinxi_jiage">
+					<div class="gwc_cp_xiangmu_xinxi_jiage_zuo">¥ {{cp.jiage}}</div>
+					<div class="gwc_cp_xiangmu_xinxi_jiage_you">
+						<!--减少数量-->
+						<img src="img/jian1.png" class="gwc_cp_xiangmu_xinxi_jiage_you1" v-on:click="remove(index,cp.gwc_id)" />
+						<!--产品数量-->
+						<input type="text" v-bind:value="cp.cp_shuliang" class="gwc_cp_xiangmu_xinxi_jiage_you2" size="2"  />
+						<!--增加数量-->
+						<img src="img/jia1.png" class="gwc_cp_xiangmu_xinxi_jiage_you3" v-on:click="add(index,cp.gwc_id)" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="huise10"></div>
+</div> <!--for-->
+	
+ 
+	
+
+<div class="dibu_jiesuan">
+	<div class="dibu_jiesuan_zuo">
+		<input  type="checkbox" class="dibu_jiesuan_zuo_chk" id="quanxian" name="quanxuan" @click="quanxuan()" />
+		<label for="quanxian">全选</label>
+	</div>
+	<div class="dibu_jiesuan_zhong">
+		合计：¥ {{zongfeiyong}}
+	</div>
+	<a  class="dibu_jiesuan_you" @click="jiesuan()" style="cursor: pointer;">
+		去结算
+	</a>
+</div>
+
+</div> <!--app-->
+
+
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  cps:[],
+		  zongfeiyong:0,
+		  cpids:""
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.GetCps();
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  //加载购物车产品列表
+		  GetCps:function(){
+				axios.get('',
+							{
+								params:{
+									uid:localStorage.u_id
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					console.log(response.data);
+					this.cps = response.data;
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});		  
+		  },
+		  //增加数量
+		  add:function(index,gwc_id){
+			  console.log("购物车id:"+gwc_id+" | index:"+ index);
+			  var shumu = ++this.cps[index].cp_shuliang;
+			  
+				var obcNameList = document.getElementsByName("xuanxiangs");
+				if(obcNameList[index].checked==true){
+					this.zongfeiyong = this.zongfeiyong + Number(this.cps[index].jiage)
+				}		
+			  
+			  console.log("数目："+shumu)
+				axios.get('',
+							{
+								params:{
+									cs_user_id:localStorage.u_id,   
+									cs_gwc_id:gwc_id,
+									cs_cp_shu:shumu
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});				  
+		  },
+		  
+		  //减少数量
+		  remove:function(index,gwc_id){
+			  if(Number(this.cps[index].cp_shuliang)<=1){
+				  alert("产品数量不能少于1");
+			  }else{
+				var shumu = --this.cps[index].cp_shuliang;
+				  
+				var obcNameList = document.getElementsByName("xuanxiangs");
+				if(obcNameList[index].checked==true){
+					this.zongfeiyong = this.zongfeiyong - Number(this.cps[index].jiage)
+				}
+				  
+				axios.get('',
+							{
+								params:{
+									cs_user_id:localStorage.u_id,   
+									cs_gwc_id:gwc_id,
+									cs_cp_shu:shumu
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});					  
+			  }
+		  },
+		  
+		  //单选计费
+		  ck:function(index){
+			  var obcNameList = document.getElementsByName("xuanxiangs");
+			  if(obcNameList[index].checked==true){
+				  this.zongfeiyong = this.zongfeiyong + this.cps[index].jiage*this.cps[index].cp_shuliang;
+			  }else{
+				  this.zongfeiyong = this.zongfeiyong - this.cps[index].jiage*this.cps[index].cp_shuliang;
+			  }
+		  },
+		  
+		  //全选和取消全选
+		  quanxuan:function(){
+			  this.zongfeiyong = 0;
+			  var obcNameList = document.getElementsByName("xuanxiangs");
+			  if(document.getElementById("quanxian").checked==true){
+				  for(var i=0;i<obcNameList.length;i++){
+					  obcNameList[i].checked=true;
+					  this.zongfeiyong=this.zongfeiyong+this.cps[i].jiage*this.cps[i].cp_shuliang
+				  }
+			  }else{
+				  this.zongfeiyong = 0;
+				   for(var i=0;i<obcNameList.length;i++){
+					   obcNameList[i].checked=false;
+				   }
+			  }
+		  },
+		  
+		  //去结算功能
+		  jiesuan:function(){
+			 this.cpids ="";
+			 var obcNameList = document.getElementsByName("xuanxiangs");
+			  for(var i=0;i<obcNameList.length;i++){
+				  if(obcNameList[i].checked==true){
+					  this.cpids = this.cpids + this.cps[i].gwc_id+",";
+				  }  
+			  }		
+			  if(this.cpids==""){
+				  alert("请选择产品");
+			  }else{
+				  console.log("选择的产品ids:"+this.cpids);
+				  window.location = "gouwuche_xiadan.html?cpids=" + this.cpids;
+			  }
+		  },
+	  },		
+		
+	})
+</script>
+</body>
+</html>

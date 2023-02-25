@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/huiyuan_zhuce.css">
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<form @submit.prevent="tijiao" name="frm" >
+<!--头部返回-->
+<div class="dingbu">
+	<a href="index.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">会员注册</p>
+</div><br>
+
+<!--注册部分-->
+<div class="zhuce_phone" style="border-top:1px solid #f2f2f2;">
+	<div class="zhuce_phone_biaoti">手机号</div>
+	<div class="zhuce_phone_shuru">
+		<input type="text" placeholder="请输入手机号码" class="zhuce_phone_shuru_input"  name="phone" v-model="u.phone" />
+	</div>
+</div>
+
+<div class="zhuce_phone">
+	<div class="zhuce_phone_biaoti">设置密码</div>
+	<div class="zhuce_phone_shuru">
+		<input type="text" placeholder="请输入新密码" class="zhuce_phone_shuru_input" name="password" v-model="u.password" />
+	</div>
+</div>
+<div class="zhuce_phone">
+	<div class="zhuce_phone_biaoti">确认密码</div>
+	<div class="zhuce_phone_shuru">
+		<input type="text" placeholder="请再次输入新密码" class="zhuce_phone_shuru_input" name="password2" v-model="u.password2" />
+	</div>
+</div>
+	
+<!--注册附加信息-->
+<div  class="zhuce_fujia">
+	<div class="zhuce_fujia_tongyi">
+		<input type="checkbox" class="zhuce_fujia_tongyi_chk" />
+		阅读并同意《注册协议》
+	</div>
+	<button class="zhuce_fujia_btn">注册并登陆</button>
+	<div class="zhuce_fujia_shuoming">登陆账号为您输入的手机号码</div>
+	<a href="#" class="zhuce_fujia_xieyi">查看注册协议</a>
+</div>
+
+</form>	
+</div>
+
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  u:{}
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  tijiao:function(){
+			  //alert("提交数据");
+			  //console.log(this.u);
+			  
+			  //判断手机是否填写和填写正确
+			  //alert(this.u.phone);
+			  if(this.u.phone==undefined){
+				  alert("请填写手机号码");
+				  return false;
+			  }else{
+				  if(this.u.phone.length !=11){
+					  alert("请输入有效的手机号码1");
+					  document.frm.phone.focus();
+					  return false;
+				  }
+				  var myreg=  /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+				  if(!myreg.test(this.u.phone)){
+					  alert("请输入有效的手机号码");
+					  document.frm.phone.focus();
+					  return false;
+				  }
+			  }
+			  
+			  //判断密码是否填写和填写是否一致
+			  if(document.frm.password.value==""){
+				  alert("请输入密码");
+				  document.frm.password.focus();
+				  return false;
+			  }
+			  if(document.frm.password.value!=document.frm.password2.value)
+			  {
+				  alert("两次输入的密码不同，请重新输入");
+				  document.frm.password.value="";
+				  document.frm.password2.value="";
+				  document.frm.password.focus();
+				  return false;
+			  }
+			  
+			  //判断没有错误，则提交注册
+				axios.get('http://localhost/shop/public/api/v1/User',
+							{
+								params:{
+									phone:this.u.phone,    //参数1
+									password:this.u.password       //参数2
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					console.log(response);
+					console.log(response.data.xinxi);
+					if(response.data.zt=="yes"){
+						alert("恭喜，注册成功！");	
+					}
+					if(response.data.zt=="no"){
+						alert(response.data.xinxi);
+					}
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+					console.log("reg:Error");
+				});	
+	
+		  }
+	  },		
+	})
+</script>
+
+</body>
+</html>

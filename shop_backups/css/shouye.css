@@ -1,0 +1,189 @@
+@charset "utf-8";
+/* 清除默认的内边距、外边距 */
+* {
+    padding: 0;
+    margin: 0;
+}
+/*查询功能*/
+.chaxun {
+    display: flex;
+    width: 100%;
+    background-color: #f6f6f6;
+    padding: 10px;
+    box-sizing: border-box;
+}
+/*查询功能-input输入框*/
+.chaxun_neirong {
+    flex-grow: 1;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #D7D7D7;
+    border-right: 0;
+}
+/*查询功能-查询按钮*/
+.chaxun_anniu {
+    border: 1px solid #D7D7D7;
+    border-left: 0;
+    padding: 5px;
+    border-radius: 0 5px 5px 0;
+}
+
+
+/* 轮播样式 */
+.lunbo {
+}
+.lunbo_img {
+    width: 100%;
+}
+/* 快捷菜单 */
+.caidan {
+    display: flex;
+    padding: 10px;
+}
+.caidan_lianjie {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: grey;
+}
+.caidan_img {
+    width: 60%;
+}
+/* 最新通知 */
+.tongzhi {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-top: 1px #e6e6e6 solid;
+    border-bottom: 1px solid #e6e6e6;
+}
+.tongzhi_lianjie {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+.tongzhi_zuo {
+    width: 20px;
+    height: 20px;
+}
+.tongzhi_neirong {
+    flex-grow: 1;
+    color: gray;
+    padding-left: 10px;
+}
+.tongzhi_you {
+    width: 16px;
+    height: 16px;
+}
+/* 区块标题 */
+.qukuai {
+    display: flex;
+    background-color: #fcfcfc;
+    align-items: center;
+    box-shadow: 2px 2px 2px gainsboro;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.qukuai_zuo {
+    width: 3px;
+    height: 18px;
+    background-color: green;
+    box-shadow: 2px 2px 2px gainsboro;
+}
+.qukuai_zhong {
+    padding-left: 8px;
+    flex: 1;
+    color: gray;
+    text-shadow: 2px 3px 2px gainsboro;
+}
+.qukuai_you {
+    color: gray;
+    text-shadow: 2px 2px 2px gainsboro;
+    text-decoration: none;
+}
+/* 最新上架产品 */
+.cp_zuixin{
+	display: flex;
+	flex-wrap: wrap;
+	padding-top: 10px;
+}
+.cp_lianjie{
+	width: 50%;
+	padding: 3px;
+	box-sizing: border-box;
+	text-decoration: none;
+	color: gray;
+}
+.cp_lianjie_href{
+	text-decoration: none;
+	color: black;
+}
+.cp_img{
+	width: 180px;
+	height: 200px;
+}
+.cp_mc{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-size: 14px;
+}
+.cp_mc2{
+	color: red;
+}
+
+/* 精品推荐 */
+.qukuai2 {
+    display: flex;
+    background-color: #fcfcfc;
+    align-items: center;
+    box-shadow: 2px 2px 2px gainsboro;
+    padding: 5px;
+    box-sizing: border-box;
+	border-top: 1px solid #f2f2f2;
+}
+.cp2_zuixin{
+	display: flex;
+	flex-wrap: wrap;
+	padding-top: 10px;
+}
+.cp2_lianjie{
+	width: 50%;
+	padding: 3px;
+	box-sizing: border-box;
+	text-decoration: none;
+	color: gray;
+}
+.cp2_lianjie_href{
+	text-decoration: none;
+	color: black;
+}
+.cp2_img{
+	width: 180px;
+	height:200px;
+	border: 1px solid  #C7C7C7;
+	border-radius: 5px;
+}
+.cp2_mc{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

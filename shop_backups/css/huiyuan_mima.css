@@ -1,0 +1,15 @@
+@charset "utf-8";
+/* 会员-注册-信息部分 */
+.zhuce_shouji{display: flex;align-items: center;background-color: #f2f2f2;border-bottom: 1px solid #bbbbbb;}
+.zhuce_shouji_biaoti{width: 5em;background-color: white;height: 40px;line-height: 40px;padding-left: 10px;}
+.zhuce_shouji_shuru{flex-grow: 1;background-color: white;height: 40px;line-height: 40px;}
+.zhuce_shouji_shuru_input{width: 90%;height: 25px;line-height: 25px;outline: none;border: none;}
+.zhuce_shouji_yanzhenma{color: green;width: 6em;text-align: center;}
+
+/* 会员-注册-附加信息 */
+.zhuce_fujia{background-color: #f2f2f2;padding: 10px;display: flex;flex-direction: column;}
+.zhuce_fujia_tongyi{padding-bottom: 20px;font-size: 13px;color: gray;}
+.zhuce_fujia_tongyi_chk{}
+.zhuce_fujia_btn{border:none;background-color: red;color: white;padding: 10px;border-radius: 5px;}
+.zhuce_fujia_shuoming{text-align: center;padding: 5px;color: gray;font-size: 13px;}
+.zhuce_fujia_xieyi{text-align: center;color: dimgray;text-decoration: none;}

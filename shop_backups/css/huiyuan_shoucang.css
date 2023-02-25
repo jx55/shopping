@@ -1,0 +1,15 @@
+@charset "utf-8";
+/* CSS Document */
+
+.shoucang{display: flex;padding: 5px;align-items: center;width: 100%;box-sizing: border-box;border-bottom: 1px solid #f2f2f2;}
+
+.shoucang_zuo{padding: 1px;border: 1px solid #bbbbbb;border-radius: 5px; box-shadow: 2px 2px 2px #BBBbbb;}
+.shoucang_zuo_img{width: 80px;height: 80px;}
+
+.shoucang_zhong{padding-left: 7px;flex-grow: 1;}
+.shoucang_zhong_txt1{font-size: 15px;}
+.shoucang_zhong_txt2{font-size: 13px;color: dimgray;padding: 3px 0 3px 0;}
+.shoucang_zhong_txt3{color: red;}
+
+.shoucang_you{}
+.shoucang_you_img{width: 25px; height: 25px;}

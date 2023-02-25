@@ -1,0 +1,52 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{background-color: #5b5b5b;padding: 20px;}
+
+.denglu{display: flex;flex-direction: column;justify-content: center;align-items:center;width: 100%;}
+.denglu_mingcheng{
+	font-size: 18px; color: white;padding-top: 50px;padding-bottom: 25px;
+}
+
+.denglu_xiangmu{display: flex;background-color: #a8a8a8;padding: 10px;border-radius: 5px;width: 100%;}
+.denglu_xiangmu_img{width: 16px;height: 16px;padding-right: 10px;}
+.denglu_xiangmu_input{flex-grow: 1;outline: none;background-color: transparent;border: none;}
+
+/* 修改输入框placeholder文字默认颜色-webkit-input-placeholder*/
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+color: #f2f2f2; 
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+color: #f2f2f2;
+}
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+color: #f2f2f2;
+}
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+color: #f2f2f2;
+}
+
+.denglu_putong{width: 100%; background-color: green;color: white;text-align: center;padding: 10px;border-radius: 5px;}
+.denglu_weixin{width: 100%;background-color: red;color: white;text-align: center;padding: 10px; border-radius: 5px;}
+.denglu_qita{width: 100%;display: flex;}
+.denglu_qita_zuo{flex-grow: 1;text-decoration: none;color: white;}
+.denglu_qita_you{text-decoration: none;color: white;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

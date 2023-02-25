@@ -1,0 +1,28 @@
+@charset "utf-8";
+
+body{ background-color: #f2f2f2;
+}
+
+/* CSS Document */
+.dizhi_liebiao{}
+.dizhi_liebiao_xiangmu{display: flex;align-items: center; padding: 10px; background-color: white;}
+
+.dizhi_liebiao_xiangmu_zuo{width: 85%;}
+.dizhi_liebiao_xiangmu_zuo_txt1{}
+.dizhi_liebiao_xiangmu_zuo_txt2{font-size: 13px;color: dimgray;padding-top: 3px;padding-bottom: 3px;}
+.dizhi_liebiao_xiangmu_zuo_txt3{}
+.dizhi_liebiao_xiangmu_zuo_moren{background-color: orange;width: 5em;display: flex;justify-content: center;color: white;padding: 3px;}
+
+.dizhi_liebiao_xiangmu_you{width: 15%; text-align: center;}
+.dizhi_liebiao_xiangmu_you_img{
+	width: 25px; height: 25px;
+}
+
+.height10{height: 10px;}
+
+
+.caozuo{ padding:10px;}
+.caozuo_tianjia{ text-align:center; padding:5px; box-sizing:border-box;}
+.caozuo_tianjia_btn{width:100%; padding:10px;  background-color:green; color:white; border:0; border-radius:5px;}
+ 
+

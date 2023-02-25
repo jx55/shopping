@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+
+/* 地址 */
+.dizhi{display: flex;align-items: center;padding: 2px;}
+
+.dizhi_zuo{padding: 5px;}
+.dizhi_zuo_img{width: 16px; height: 16px;}
+
+.dizhi_zhong{flex-grow: 1;}
+.dizhi_zhong_xingming{}
+.dizhi_zhong_dizhi{}
+
+.dizhi_you{padding: 5px;background-color: green; color: white;border: 0;}
+
+
+/* 线条 */
+.huise10{height: 5px;background-color: #f2f2f2;}
+.xiantiao{height: 4px; background-image: url("../img/xiantiao.png");}
+
+/* 产品 */
+.jiesuan_cp{padding: 5px;display: flex;align-items: center;border-bottom:1px dotted #bbbbbb;}
+.jiesuan_cp_tupian{padding: 5px; }
+.jiesuan_cp_tupian_img{width: 80px; height: 80px;border: 1px solid #bbbbbb; border-radius: 5px;}
+.jiesuan_cp_xinxi{}
+.iesuan_cp_xinxi_biaoti{font-size: 15px;}
+.jiesuan_cp_xinxi_shuxing{font-size: 13px; color: dimgray;}
+.jiesuan_cp_xinxi_jiage{display: flex;}
+.jiesuan_cp_xinxi_jiage_zuo{flex:1; color: red;}
+.jiesuan_cp_xinxi_jiage_you{color: orange;}
+
+.jiesuan_fujia{display: flex;padding: 10px;border-bottom: 1px solid #f2f2f2;}
+.jiesuan_fujia_zuo{flex-grow: 1;}
+.jiesuan_fujia_you{color: red;}
+
+.jiesuan_liuyan{padding: 10px;display: flex;border-bottom: 1px dotted #bbbbbb;}
+.jiesuan_liuyan_zuo{}
+.jiesuan_liuyan_you{flex-grow: 1;padding-left: 10px;}
+.jiesuan_liuyan_you_input{width: 100%;border: none;outline: none;}
+
+.jiesuan_feiyong{padding: 10px;display: flex;justify-content: center;}
+.jiesuan_feiyong_txt1{}
+.jiesuan_feiyong_txt2{color: red;font-weight: bold;}
+
+.jiesuan_tijiao{padding: 10px 10px 20px 10px;;}
+.jiesuan_tijiao_btn{width: 100%;padding: 10px;border: none; background-color: green; color: white;font-size: 18px;border-radius: 5px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

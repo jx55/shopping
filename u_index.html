@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/huiyuan_shouye.css">	
+<link rel="stylesheet" href="css/dibu_caidan.css">
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<!--用户登录首页-->
+<script>
+	//localStorage.u_login = "yes";
+	//localStorage.u_id = response.data.uid;
+	if(localStorage.u_login=="yes"){
+		console.log("登录状态");
+	}else{
+		//console.log("没有登录");
+		alert("没有登录，跳转到登录页面");
+		window.location = "u_login.html"
+	}
+</script>
+	
+<!--首页用户信息-->
+<div class="yonghu">
+	<div class="yonghu_touxiang">
+		<img v-bind:src="mytouxiang" class="yonghu_touxiang_img" />
+	</div>
+	<div class="yonghu_xinxi">
+		<div class="yonghu_xinxi_nicheng">{{username}}</div>
+		<div class="yonghu_xinxi_dengji">等级：普通会员</div>
+		<div class="yonghu_xinxi_phone">手机：{{phone}}</div>
+	</div>
+</div>
+
+<!--首页导航菜单-->	
+<!--首页导航菜单-我的订单-->	
+<div class="daohang">
+	<img src="img/m01.png" class="daohang_img" />
+	<div class="daohang_biaoti">我的订单</div>
+	<a class="daohang_you" href="u_dingdan_list.html?lxid=0" >全部订单</a>
+</div>
+<!--首页4个菜单-->	
+<div class="caidan">
+	<a href="u_dingdan_list.html?lxid=2" class="caidan_lianjie">
+		<img class="caidan_img" src="img/d01.png" />
+		<p class="caidan_mingcheng">待付款</p>
+	</a>
+	<a href="u_dingdan_list.html?lxid=3"  class="caidan_lianjie">
+		<img class="caidan_img" src="img/d02.png" />
+		<p class="caidan_mingcheng">待交易</p>
+	</a>
+	<a href="u_dingdan_list.html?lxid=4"  class="caidan_lianjie">
+		<img class="caidan_img" src="img/d03.png" />
+		<p class="caidan_mingcheng">待确认</p>
+	</a>
+	<a href="u_dingdan_list.html?lxid=5"  class="caidan_lianjie">
+		<img class="caidan_img" src="img/d04.png" />
+		<p class="caidan_mingcheng">待评价</p>
+	</a>	
+</div>
+
+<div class="huise10"></div>
+	
+<a class="daohang2" href="u_shoucang_list.html">
+	<img src="img/m02.png" class="daohang2_img" />
+	<div class="daohang2_biaoti">我的收藏</div>
+	<img src="img/right.png" class="daohang2_you">
+</a>
+	
+<a class="daohang2" href="u_dizhi_list.html">
+	<img src="img/m03.png" class="daohang2_img" />
+	<div class="daohang2_biaoti">我的地址</div>
+	<img src="img/right.png" class="daohang2_you">
+</a>
+	
+<a class="daohang2"  href="u_xinxi.html">
+	<img src="img/m06.png" class="daohang2_img" />
+	<div class="daohang2_biaoti">用户信息</div>
+	<img src="img/right.png" class="daohang2_you">
+</a>
+		
+<a class="daohang2" href="u_mima.html">
+	<img src="img/m04.png" class="daohang2_img" />
+	<div class="daohang2_biaoti">密码修改</div>
+	<img src="img/right.png" class="daohang2_you">
+</a>
+	
+<a class="daohang2" href="u_logout.html">
+	<img src="img/m05.png" class="daohang2_img" />
+	<div class="daohang2_biaoti">退出登录</div>
+	<img src="img/right.png" class="daohang2_you">
+</a>
+	
+
+
+
+
+
+<!--底部导航菜单-->
+<div class="dibu_caidan" id="dl_yes">
+	<a href="index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/a-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti ">首页</p>
+	</a>
+	<a href="chanpin_fenlei.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/b-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">分类</p>
+	</a>
+	<a href="gouwuche.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/c-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">购物车</p>
+	</a>
+	<a href="u_index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/d-on.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti dibu_caidan_xiangmu_biaoti_xuanzhong">会员</p>
+	</a>
+</div>
+
+
+<div class="dibu_caidan" id="dl_no">
+	<a href="index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/a-on.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti dibu_caidan_xiangmu_biaoti_xuanzhong">首页</p>
+	</a>
+	<a href="chanpin_fenlei.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/b-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">分类</p>
+	</a>
+	<a onClick="denglu()" class="dibu_caidan_xiangmu" style="cursor:pointer;">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/c-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">购物车</p>
+		<!--p class="gouwucheshu"></p-->
+	</a>
+	<a onClick="denglu()" class="dibu_caidan_xiangmu" style="cursor: pointer">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/d-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">会员</p>
+	</a>
+</div>
+	<script>
+		function denglu(){
+			if(confirm("请登录")){
+				window.location.href = "u_login.html"
+			}
+		}
+		
+		if(localStorage.u_login=="yes"){
+			document.getElementById("dl_yes").style.display="";
+			document.getElementById("dl_no").style.display="none";
+		}else{
+			document.getElementById("dl_yes").style.display="none";
+			document.getElementById("dl_no").style.display="";	
+		}
+	
+	</script>
+	
+</div><!--app-->	
+	
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		phone:"",
+		mytouxiang:"",
+		username:"",
+		sex:1,
+		qq:"",
+		email:"" 
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.GetUInfo();
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  GetUInfo:function(){
+				axios.get('http://localhost/shop/public/api/v1/User/id',
+							{
+								params:{
+									uid:localStorage.u_id
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					//console.log(response.data);
+					this.phone = response.data.phone;
+					this.mytouxiang = response.data.mytouxiang;
+					this.username = response.data.username;
+					this.sex = response.data.sex;
+					this.qq = response.data.qq;
+					this.email = response.data.email;					
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+					console.log("user:Error");
+				});	
+		  }
+	  },		
+	})
+</script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+@charset "utf-8";
+/* CSS Document */
+/* 清除默认的内边距、外边距 */
+* {
+    padding: 0;
+    margin: 0;
+}
+html,body{
+	height: 100%;
+}
+/*查询功能*/
+.chaxun {
+    display: flex;
+    width: 100%;
+    background-color: #f6f6f6;
+    padding: 10px;
+    box-sizing: border-box;
+}
+/*查询功能-input输入框*/
+.chaxun_neirong {
+    flex-grow: 1;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #D7D7D7;
+    border-right: 0;
+}
+/*查询功能-查询按钮*/
+.chaxun_anniu {
+    border: 1px solid #D7D7D7;
+    border-left: 0;
+    padding: 5px;
+    border-radius: 0 5px 5px 0;
+}
+
+/*查询条件*/
+.chaoxun_tiaojian{
+	display: flex;
+	padding: 5px;
+	border-bottom: 1px dotted #bbb; 
+}
+.chaoxun_tiaojian_zhonghe{
+	flex-grow: 1; 
+	text-align: center;
+}
+.chaoxun_tiaojian_zhonghe_txt{}
+.chaoxun_tiaojian_xiaoliang{
+	flex-grow: 1;
+	display: flex;
+	justify-content: center;
+	border-left: 1px solid #bbb; 
+	border-right: 1px solid #bbb;
+}
+.chaoxun_tiaojian_xiaoliang_txt{}
+
+.chaoxun_tiaojian_price{
+	flex-grow: 1;
+	display: flex;
+	justify-content: center;
+}
+.chaoxun_tiaojian_price_txt{}
+/*查询条件-向下箭头*/
+.jiantou_xia{
+	width: 0px;
+	height: 0px;
+	border-top: red solid 7px;
+	border-bottom: transparent solid 7px;
+	border-left: transparent solid 7px;
+	border-right: transparent solid 7px;;
+	margin-top:7px;
+}
+/*查询条件-向上箭头*/
+.jiantou_shang{
+	width: 0px;
+	height: 0px;
+	border-bottom: red solid 7px;
+	border-top: transparent solid 7px;
+	border-left: transparent solid 7px;
+	border-right: transparent solid 7px;;
+	margin-bottom:7px;
+}
+.chanpin{
+	display: flex;
+	padding: 5px;
+	border-bottom: 1px solid #f2f2f2;
+	 text-decoration:none;
+	}
+.chanpin_tupian{
+	padding: 5px
+}
+.chanpin_tupian_img{
+	width: 70px;
+	height: 70px;
+	box-shadow: 2px 2px 2px gray;
+	border:1px solid #f2f2f2;
+}
+
+.chanpin_xinxi{
+	padding: 5px;
+}
+.chanpin_xinxi_biaoti{
+	font-size: 15px;
+}
+.chanpin_xinxi_price{
+	font-size: 14px; 
+	color: red;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.chanpin_xinxi_haopin{
+	font-size: 14px;
+	color: gray;
+}
+.chanpin0{
+	height: 70%;
+	overflow-y: scroll;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

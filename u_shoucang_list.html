@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/huiyuan_shoucang.css">	
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<!--购物车顶部导航-->
+<div class="dingbu">
+	<a href="u_index.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">我的收藏</p>
+</div>
+<div v-for="sc in shoucangs">
+	<div class="shoucang">
+		<div class="shoucang_zuo">
+			<img v-bind:src="sc.cp_tupian" class="shoucang_zuo_img" />
+		</div>
+		<div class="shoucang_zhong">
+			<div class="shoucang_zhong_txt1">
+				{{sc.cp_name}}
+			</div>
+			<div class="shoucang_zhong_txt2">剩余：{{sc.cp_kucun}} | 限购：{{sc.xiangou_shuliang}} 件</div>
+			<div class="shoucang_zhong_txt3">单价：¥ {{sc.price}}</div>
+		</div>
+		<div class="shoucang_you">
+			<a v-on:click="del('u_shoucang_del.html?id='+sc.sc_id)"  style="cursor: pointer;">
+				<img src="img/del.png"  class="shoucang_you_img" />
+			</a>
+		</div>
+	</div> 
+</div><!--for-->
+
+</div> <!--app-->
+	
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  shoucangs:[]
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.GetShoucang();
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  //获取收藏列表
+		  GetShoucang:function(){
+				axios.get('http://localhost/shop/public/api/v1/Collection/id',
+							{
+								params:{
+									id:localStorage.u_id
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					console.log(response.data);
+					this.shoucangs=response.data;
+					
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+					console.log("shoucang:Error");
+				});				  
+		  },
+		  //删除函数
+		  del:function(cs){
+			  if(confirm("确实是否删除收藏？")){
+				  window.location.href=cs;
+			  }
+		  },
+		  
+	  },		
+	})
+</script>	
+	
+</body>
+</html>

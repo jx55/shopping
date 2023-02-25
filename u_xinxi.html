@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/huiyuan_mima.css">
+	<script src="vue2.2.2.min.js" ></script>
+	<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<form @submit.prevent="tijiao" name="frm">	
+<!--头部返回-->
+<div class="dingbu">
+	<a href="u_index.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">用户信息</p>
+</div><br>
+
+<!--注册信息部分-->
+
+<div class="zhuce_shouji">
+	<div class="zhuce_shouji_biaoti">我的头像</div>
+	<div class="zhuce_shouji_shuru">
+		<img   v-bind:src="mytouxiang"  style="width: 30px;height: 30px;" />
+		<input type="file" @change="uploadFile($event)" multiple="multiple" />
+	</div>
+</div>
+<div class="zhuce_shouji">
+	<div class="zhuce_shouji_biaoti">我的姓名</div>
+	<div class="zhuce_shouji_shuru">
+		<input type="text" placeholder="请输入姓名" class="zhuce_shouji_shuru_input" name="xingming" v-model="xingming" />
+	</div>
+</div>
+<div class="zhuce_shouji">
+	<div class="zhuce_shouji_biaoti">我的性别</div>
+	<div class="zhuce_shouji_shuru">
+		 <select name="xingbie" v-model="xingbie">
+			<option  value="1">男</option>
+		    <option  value="0">女</option>
+		 </select>
+	</div>
+</div>	
+<div class="zhuce_shouji">
+	<div class="zhuce_shouji_biaoti">我的 Q Q</div>
+	<div class="zhuce_shouji_shuru">
+		<input type="text" placeholder="请输入我的qq" class="zhuce_shouji_shuru_input" name="qq" v-model="qq" />
+	</div>
+</div>
+<div class="zhuce_shouji">
+	<div class="zhuce_shouji_biaoti">我的邮箱</div>
+	<div class="zhuce_shouji_shuru">
+		<input type="text" placeholder="请输入我的邮箱" class="zhuce_shouji_shuru_input"  name="email" v-model="email"/>
+	</div>
+</div>
+	
+<!--注册附加信息-->
+<div  class="zhuce_fujia">
+	<input class="zhuce_fujia_btn" type="submit" value="确认修改用户信息" >
+
+</div>
+</form>
+</div>
+
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		shouji:"",
+		mytouxiang:"",
+		xingming:"",
+		xingbie:1,
+		qq:"",
+		email:"" 
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.GetUInfo();
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  GetUInfo:function(){
+				axios.get('http://localhost/shop/public/api/v1/User/id',
+							{
+								params:{
+									id:localStorage.u_id
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					//console.log(response.data);
+					this.shouji = response.data.shouji;
+					this.mytouxiang = response.data.mytouxiang;
+					this.xingming = response.data.xingming;
+					this.xingbie = response.data.xingbie;
+					this.qq = response.data.qq;
+					this.email = response.data.email;					
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+					console.log("getuserxinxi:Error");
+				});	
+		  },
+		  /*
+		  uploadFile:function(event){
+			  this.file = event.target.files[0];
+			  let param = new FormData(); // 创建form对象
+			  param.append('imgFile', this.file);//对应后台接收图片名
+			  
+			  axios.post('http://vue.xxx.com/up/ajax_upload.asp',param)
+				.then(function(res){
+				  console.log(res);
+				  this.mytouxiang = "http://vue.xxx.com/up/" + res.data
+				}.bind(this))
+				.catch(function(error){
+				  console.log(error);
+				});
+		  },
+		  */
+		  //提交修改
+		  //http://vue.yaoyiwangluo.com/wx_u_xinxi_gengxin.asp
+		  tijiao:function(){
+	  		console.log(this.xingming);
+				axios.get('http://localhost/shop/public/api/v1/User',
+							{
+								params:{
+									uid:localStorage.u_id,
+									mytouxiang:this.mytouxiang,
+									xingming:this.xingming,
+									xingbie:this.xingbie,
+									qq:this.qq,
+									email:this.email									
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					console.log(response.data);
+					alert("修改成功");
+					window.location ="u_index.html"
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+					console.log("xiugaiuserxinxi:Error");
+				});	
+				  
+		  }
+	  },		
+	})
+</script>
+
+</body>
+</html>

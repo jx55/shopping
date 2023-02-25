@@ -1,0 +1,282 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台-购物车</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/gouwuche_xiadan.css">
+	<script src="vue2.2.2.min.js" ></script>
+	<script src="axios.min.js"></script>	
+</head>
+
+<body>
+	<script>
+	//下面代码获取页面的参数
+	urlinfo=window.location.href; //获取当前页面的url
+	//document.write(urlinfo)
+	len=urlinfo.length;//获取url的长度
+	offset=urlinfo.indexOf("?");//设置参数字符串开始的位置
+	neirong=urlinfo.substr(offset+1,len)//取出参数字符串 这里会获得类似“id=1”这样的字符串
+	console.log(neirong);
+ 
+	cs1=neirong.split("=")
+	cs1_mc=cs1[0];//得到参数名字
+	cs1_zhi=cs1[1];//得到参数值
+	cs1_zhi = cs1_zhi.substr(0,cs1_zhi.length-1);//去掉最后的逗号
+    console.log(cs1_zhi);
+	
+	</script>	
+
+<div id="app"> 
+<form @submit.prevent="tijiao" name="frm">
+	
+	
+	<!--顶部导航-->
+	<div class="dingbu">
+		<a href="gouwuche.html" class="dingbu_lianjie">
+			<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+		</a>
+		<p class="dingbu_biaoti">下单页面</p>
+	</div>
+
+
+	<!--地址-->
+	<div class="dizhi">
+		<div class="dizhi_zuo">
+			<img src="img/dizhi.png" class="dizhi_zuo_img" />
+		</div>
+		
+		<div class="dizhi_zhong">
+			
+			<div v-for="dizhi in dizhis">
+				<div class="dizhi_zhong_xingming">
+					<input type="radio" :value="dizhi.dizhi_id" name="dizhi_id"  :checked="dizhi.yn_moren==1" > {{dizhi.xingming}} - {{dizhi.shouji}}<br>
+					{{dizhi.diqu1}}{{dizhi.diqu2}}{{dizhi.diqu3}}{{dizhi.dizhi}}
+				</div>
+			</div>	
+		</div>
+			
+		 
+ 
+	    <input class="dizhi_you"  onClick="xin()" type="button" value="新增" >
+	
+			<script>
+				function xin(){
+					openWin("u_dizhi_add2.html");
+			 
+				}	
+				function openWin(url){
+					var winObj = window.open(url,'',"toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400");
+					var loop = setInterval(function() {     
+						if(winObj.closed) {    
+							clearInterval(loop);    
+							//alert('closed');    
+							parent.location.reload(); 
+						}    
+					}, 1);   
+				 }
+
+ 
+			</script>
+	</div>
+
+	<!--线条-->
+	<div class="huise10"></div>
+	<div class="xiantiao"></div>
+	<div class="huise10"></div>
+
+	
+	<div v-for="(cp,index) in cps">
+		<!--产品-->
+		<div class="jiesuan_cp">
+			<div class="jiesuan_cp_tupian">
+				<img v-bind:src="cp.cp_tupian"   class="jiesuan_cp_tupian_img" />
+			</div>
+			<div class="jiesuan_cp_xinxi">
+				<div class="jiesuan_cp_xinxi_biaoti">
+					{{cp.cp_mingcheng}}
+				</div>
+				<div class="jiesuan_cp_xinxi_shuxing">
+					库存：{{cp.cp_kucu}} |  已销售：{{cp.cp_yixiaoshou}}
+				</div>
+				<div class="jiesuan_cp_xinxi_jiage">
+					<div class="jiesuan_cp_xinxi_jiage_zuo">¥ {{cp.jiage}}</div>
+					<div class="jiesuan_cp_xinxi_jiage_you">数量 X {{cp.cp_shuliang}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="huise10"></div>
+
+	<div class="jiesuan_fujia">
+		<div class="jiesuan_fujia_zuo">配送方式</div>
+		<div class="jiesuan_fujia_you">快递</div>	
+	</div>
+	<div class="jiesuan_fujia">
+		<div class="jiesuan_fujia_zuo">运费</div>
+		<div class="jiesuan_fujia_you">¥ 8.00</div>	
+	</div>	
+
+	<div class="jiesuan_liuyan">
+		<div class="jiesuan_liuyan_zuo">留言</div>
+		<div class="jiesuan_liuyan_you">
+			<input type="text" placeholder="请输入留言内容" name="liuyan" v-model="liuyan" class="jiesuan_liuyan_you_input" >
+		</div>
+	</div>
+	<div class="huise10"></div>
+
+	<div class="jiesuan_feiyong">
+		<p class="jiesuan_feiyong_txt1">总金额：</p>
+		<p class="jiesuan_feiyong_txt2"> ¥ {{fy}} </p>
+	</div>
+
+	<div class="jiesuan_tijiao">
+		<button class="jiesuan_tijiao_btn">下单支付</button>
+	</div>
+	
+</form>
+</div>
+	
+	
+	
+	
+	
+	
+	
+<script>
+new Vue({
+  el: '#app',
+  data: {
+	dizhis:[],
+	dizhi_id:"",
+	cps:[],
+	liuyan:"",
+	fy:0
+	
+  },
+  mounted:function(){
+		  this.UDiZhis();
+	      this.GetCps();
+	  },	
+  methods:{
+	  //加载用户地址
+	  UDiZhis:function(message){
+			axios.get(`http://vue.yaoyiwangluo.com/wx_dizhi_list.asp`,
+						{
+							params:{
+								cs_uid:localStorage.u_id
+							}
+						}							 
+			   )
+			  .then(response => {
+				console.log(response.data);
+				this.dizhis = response.data;
+                /*
+				this.dizhi_id  = response.data.dizhi_id;
+				this.xingming = response.data.xingming;
+				this.shouji = response.data.shouji;
+				this.diqu1 = response.data.diqu1;
+				this.diqu2 = response.data.diqu2;
+				this.diqu3 = response.data.diqu3;
+				this.dizhi = response.data.dizhi;
+				this.mr = response.data.yn_moren;				
+				*/
+			  })
+			  .catch(function (error) {
+				console.log(error);
+			});
+	  },	
+		  //加载购物车产品列表
+		  GetCps:function(){
+				axios.get(`http://vue.yaoyiwangluo.com/wx_gwc_list_by_ids.asp`,
+							{
+								params:{
+									uid:localStorage.u_id,
+									cpids:cs1_zhi
+								}
+							}						 
+						 )
+				  .then(function (response) {
+					console.log(response.data);
+					this.cps = response.data;
+						 for(var x=0;x<this.cps.length;x++){
+							  this.fy = this.fy + this.cps[x].jiage * this.cps[x].cp_shuliang;
+						  }	
+					
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});
+		  },
+	  
+ 
+	  tijiao:function(){
+		    console.log(document.getElementsByName("dizhi_id"));
+			var objNameList=document.getElementsByName('dizhi_id');
+			for(var i=0;i<objNameList.length;i++)
+			{  
+				if(objNameList[i].checked==true){
+					this.dizhi_id = objNameList[i].value  
+				}
+			}						
+			if(this.dizhi_id==""||this.dizhi_id==undefined){
+				alert("请选择收货地址！");
+				return false;
+			}else{
+				console.log("选择的地址是："+this.dizhi_id);	
+			}		  
+		  
+		    console.log("留言："+this.liuyan);
+		  
+		  
+		   //下单
+			axios.get('http://vue.yaoyiwangluo.com/wx_gwc_xiadan_by_cpids.asp',
+					 {
+						   params:{
+							    cs_uid:localStorage.u_id,
+							    cpids:cs1_zhi,
+						   		cs_dizhiid:this.dizhi_id,
+							    cs_liuyan:this.liuyan
+						   }
+					  }
+					 )
+			.then(function(response) {
+				console.log(response);
+				console.log(response.data.xinxi);
+				//根据返回信息跳转
+				if(response.data.zt=="yes"){
+				   alert('下单成功!');
+				   window.location='u_dingdan_list.html';
+				}
+				if(response.data.zt=="no"){
+				}				
+
+ 			})
+			.catch(function(error) {
+				//错误处理
+				console.log(error);
+			});
+		  
+		  
+	  }
+			
+	 
+  }	
+	
+	
+	
+})
+</script>	
+		
+	
+	
+	
+	
+	
+	
+
+
+</body>
+</html>

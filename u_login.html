@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/huiyuan_denglu.css">
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<form @submit.prevent="tijiao" name="frm">
+	<div class="denglu">
+		<div class="denglu_mingcheng">欢迎登陆交易平台</div>
+		<div class="denglu_xiangmu">
+			<img src="img/yonghu.png" class="denglu_xiangmu_img" />
+			<input type="text" placeholder="请输入用户名" class="denglu_xiangmu_input" name="phone" v-model="u.phone">
+		</div>
+		<br>
+		<div class="denglu_xiangmu">
+			<img src="img/password.png" class="denglu_xiangmu_img" />
+			<input type="text" placeholder="请输入密码" class="denglu_xiangmu_input" name="password" v-model="u.password">
+		</div>	
+		
+		<br>
+ 		<input type="submit"  class="denglu_putong" value="立即登陆"  style="border: 0;outline: none;">
+	
+		<br>
+		<br>
+		<div class="denglu_qita">
+			<a href="u_reg.html" class="denglu_qita_you">免费注册</a>	
+		</div>
+		
+		
+	</div>
+</form>		
+</div> <!--app-->	
+	
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  u:{}
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  tijiao:function(){
+			  if(this.u.phone==undefined || this.u.password==undefined){
+				  alert("请填写用户名或者密码");
+				  return false;
+			  }
+			  //提交信息
+				axios.get('http://localhost/shop/public/api/v1/User/id',
+							{
+								params:{
+									phone:this.u.phone,    //参数1
+									password:this.u.password        //参数2
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					console.log(response);
+					console.log(response.data);
+					console.log(response.data.xinxi);
+					console.log(response.data.uid);
+					if(response.data.zt=="yes"){
+						alert("登录成功");
+						//写缓存信息
+						localStorage.u_login = "yes";
+						localStorage.u_id = response.data.uid;
+						window.location = "u_index.html";
+					}
+					if(response.data.zt=="no"){
+						alert(response.data.xinxi);
+					}
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+					console.log("Login:Error");
+				});	
+			  
+		  }
+	  },
+	})
+</script>
+</body>
+</html>

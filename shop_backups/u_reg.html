@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>黄菊华：H5+CSS3商城界面实战-购物车</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/huiyuan_zhuce.css">
+	<script src="vue2.2.2.min.js" ></script>
+	<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<form @submit.prevent="tijiao" name="frm" >
+<!--头部返回-->
+<div class="dingbu">
+	<a href="index.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">会员注册</p>
+</div><br>
+
+<!--会员-注册-信息部分-->
+<div class="zhuce_shouji" style="border-top:1px solid #f2f2f2;">
+	<div class="zhuce_shouji_biaoti">手机号</div>
+	<div class="zhuce_shouji_shuru">
+		<input type="text" placeholder="请输入手机号码" class="zhuce_shouji_shuru_input"  name="shouji" v-model="u.shouji" />
+	</div>
+	<div class="zhuce_shouji_yanzhenma">获取验证码</div>
+</div>
+<div class="zhuce_shouji">
+	<div class="zhuce_shouji_biaoti">验证码</div>
+	<div class="zhuce_shouji_shuru">
+		<input type="text" placeholder="请输入验证码" class="zhuce_shouji_shuru_input" />
+	</div>
+	<div class="zhuce_shouji_yanzhenma">已经发送</div>
+</div>
+<div class="zhuce_shouji">
+	<div class="zhuce_shouji_biaoti">设置密码</div>
+	<div class="zhuce_shouji_shuru">
+		<input type="text" placeholder="请输入新密码" class="zhuce_shouji_shuru_input" name="mima1" v-model="u.mima1" />
+	</div>
+</div>
+<div class="zhuce_shouji">
+	<div class="zhuce_shouji_biaoti">确认密码</div>
+	<div class="zhuce_shouji_shuru">
+		<input type="text" placeholder="请再次输入新密码" class="zhuce_shouji_shuru_input" name="mima2" v-model="u.mima2" />
+	</div>
+</div>
+	
+<!--会员-注册-附加信息-->
+<div  class="zhuce_fujia">
+	<div class="zhuce_fujia_tongyi">
+		<input type="checkbox" class="zhuce_fujia_tongyi_chk" />
+		阅读并同意《注册协议》
+	</div>
+	<button class="zhuce_fujia_btn">注册并登陆</button>
+	<div class="zhuce_fujia_shuoming">登陆账号为您输入的手机号码</div>
+	<a href="#" class="zhuce_fujia_xieyi">查看注册协议</a>
+</div>
+
+</form>	
+</div><!--app-->
+
+
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  u:{}
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  tijiao:function(){
+			  //alert("提交数据");
+			  //console.log(this.u);
+			  
+			  //判断手机是否填写和填写正确
+			  //alert(this.u.shouji);
+			  if(this.u.shouji==undefined){
+				  alert("请填写手机号码");
+				  return false;
+			  }else{
+				  if(this.u.shouji.length !=11){
+					  alert("请输入有效的手机号码1");
+					  document.frm.shouji.focus();
+					  return false;
+				  }
+				  var myreg=  /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+				  if(!myreg.test(this.u.shouji)){
+					  alert("请输入有效的手机号码2");
+					  document.frm.shouji.focus();
+					  return false;
+				  }
+			  }
+			  
+			  //判断密码是否填写和填写是否一致
+			  if(document.frm.mima1.value==""){
+				  alert("请输入密码");
+				  document.frm.mima1.focus();
+				  return false;
+			  }
+			  if(document.frm.mima1.value!=document.frm.mima2.value)
+			  {
+				  alert("两次输入的密码不同，请重新输入");
+				  document.frm.mima1.value="";
+				  document.frm.mima2.value="";
+				  document.frm.mima1.focus();
+				  return false;
+			  }
+			  
+			  //判断没有错误，则提交注册
+			  // http://vue.yaoyiwangluo.com/wx_check_reg_yonghu.asp
+			  // ?yhm=13512345678&mm=123456
+				axios.get('http://vue.yaoyiwangluo.com/wx_check_reg_yonghu.asp',
+							{
+								params:{
+									yhm:this.u.shouji,    //参数1
+									mm:this.u.mima1       //参数2
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					console.log(response);
+					console.log(response.data.xinxi);
+					if(response.data.zt=="yes"){
+						alert("恭喜，注册成功！");
+						
+					}
+					if(response.data.zt=="no"){
+						alert(response.data.xinxi);
+					}
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});	
+	
+			  
+			  
+		  }
+	  },		
+	})
+</script>
+
+
+
+</body>
+</html>

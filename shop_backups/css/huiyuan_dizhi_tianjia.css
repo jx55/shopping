@@ -1,0 +1,51 @@
+@charset "utf-8";
+/* CSS Document */
+
+.dizhi{}
+
+.dizhi_xiangmu{display: flex;padding: 10px;border-bottom: 1px solid #f2f2f2;width: 100%;box-sizing: border-box;}
+
+.dizhi_xiangmu_zuo{width: 6em;}
+
+.dizhi_xiangmu_you{width: 100%;}
+.dizhi_xiangmu_you_input{width: 100%;border: 0;outline: none;}
+
+.dizhi_xiangmu_moren{
+	width: 100%;
+}
+
+.dizhi_xiangmu_moren input{ display: none;}
+.dizhi_xiangmu_moren label{
+	width: 52px; background-color: #ccc; height: 28px;
+	float: right; border-radius: 14px;
+	box-shadow: 0 1px 2px rgba(0,0,0,.1) inset;
+}
+.dizhi_xiangmu_moren label em{
+	width: 26px; height: 26px;background-color: #f2f2f2;
+    float: left;  border-radius: 13px;margin: 1px;
+	transition: 0.1s;
+}
+.dizhi_xiangmu_moren input:checked+label{
+	background-color: green;
+}
+.dizhi_xiangmu_moren input:checked+label em{
+	margin: 1px 1px 1px 25px;
+}
+
+
+.caozuo{ padding: 10px;}
+.caozuo_baocun{}
+.caozuo_baocun_btn{width: 100%;padding: 5px; border: 0;border-radius: 5px;
+background-color: green;color: white;font-size: 16px;}
+
+.caozuo_shanchu{}
+.caozuo_shanchu_btn{width: 100%;padding: 5px; border: 0;border-radius: 5px;
+background-color: red;color: white;font-size: 16px;}
+
+
+
+
+
+
+
+

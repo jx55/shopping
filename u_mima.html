@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/huiyuan_mima.css">
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<form @submit.prevent="tijiao" name="frm">	
+<!--头部返回-->
+<div class="dingbu">
+	<a href="u_index.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">密码修改</p>
+</div><br>
+
+<!--注册信息部分-->
+
+<div class="zhuce_shouji">
+	<div class="zhuce_shouji_biaoti">原始密码</div>
+	<div class="zhuce_shouji_shuru">
+		<input type="text" placeholder="请输入原始密码" class="zhuce_shouji_shuru_input" name="password" v-model="u.password" />
+	</div>
+</div>
+<div class="zhuce_shouji">
+	<div class="zhuce_shouji_biaoti">新的密码</div>
+	<div class="zhuce_shouji_shuru">
+		<input type="text" placeholder="请输入新密码" class="zhuce_shouji_shuru_input" name="password1" v-model="u.password1" />
+	</div>
+</div>
+<div class="zhuce_shouji">
+	<div class="zhuce_shouji_biaoti">确认密码</div>
+	<div class="zhuce_shouji_shuru">
+		<input type="text" placeholder="请再次输入确认密码" class="zhuce_shouji_shuru_input"  name="password2" v-model="u.password2"/>
+	</div>
+</div>
+	
+<!--注册附加信息-->
+<div  class="zhuce_fujia">
+	<input class="zhuce_fujia_btn" type="submit" value="确认修改密码" >
+</div>
+</form>
+</div>
+
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  u:{},
+		  pass:''
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  tijiao:function(){
+			  //判断是否填写
+			  if(this.u.password==undefined || this.u.password1 == undefined || this.u.password2==undefined){
+				  alert("请输入信息");
+				  return false;
+			  }
+			  //判断密码是否填写和填写是否一致
+              if(document.frm.password1.value!=document.frm.password2.value){
+				  alert("两次密码不同，请重新输入");
+				  document.frm.password1.value = "";
+				  document.frm.password2.value = "";
+				  document.frm.password1.focus();
+				  return false;
+			  }
+			 axios.get("http://localhost/shop/public/api/v1/User/id")
+			 .then(function(response){
+				 this.pass=response.data.password;
+			 })
+			 if(this.u.password!=this.pass){
+				 alert("原始密码输入错误！");
+				 return false;
+			 }
+			 else{
+				 //判断没有错误，则提交修改
+				 axios.get('http://localhost/shop/public/api/v1/User',
+				 			{
+				 				params:{
+				 					id:localStorage.u_id,    //参数1
+				 					password:this.u.password  //参数2
+				 				}
+				 			}				 
+				 		 )
+				   .then(function (response) {
+				 	//response.data 返回值,下面插入你要执行的代码
+				 	//console.log(response);
+				 	console.log(response.data);
+				 	if(response.data.zt=="yes"){
+				 		alert("密码修改成功");
+				 		window.location ="u_index.html";
+				 	}
+				 	if(response.data.zt=="no"){
+				 		alert(response.data.xinxi);
+				 	}				
+				 
+				   }.bind(this))
+				   .catch(function (error) {
+				 	console.log(error);
+				 	console.log("Changepass:Error");
+				 });	
+			 }
+			 
+		  }
+	  },		
+	})
+</script>
+
+
+</body>
+</html>

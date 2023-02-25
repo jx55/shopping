@@ -1,0 +1,244 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/huiyuan_dingdan.css">	
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>
+</head>
+
+<body>
+<script>
+	//获取页面的参数
+	cs1_zhi = 0 ;
+	urlinfo=window.location.href; //获取当前页面的url
+	//document.write(urlinfo)
+	len=urlinfo.length;//获取url的长度
+	offset=urlinfo.indexOf("?");//设置参数字符串开始的位置
+	if(offset>0){
+		neirong=urlinfo.substr(offset+1,len);//取出参数字符串 这里会获得类似“id=1”这样的字符串
+		neirong = neirong.replace("#","");
+		console.log(neirong);
+		cs1=neirong.split("=")
+		cs1_mc=cs1[0];//得到参数名字
+		cs1_zhi=cs1[1];//得到参数值
+	}else{
+	}
+	console.log("参数："+cs1_zhi);
+</script>	
+		
+<div id="app">
+<!--购物车顶部导航-->
+<div class="dingbu">
+	<a href="u_index.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">订单</p>
+</div>
+	
+<!--购物车顶部导航状态-->
+<div class="caidan">
+	<a  href="u_dingdan_list.html?lxid=2" v-bind:class="['caidan_putong',xianshi2 ? 'caidan_xuanzhong' : '']">待付款</a>
+	<a  href="u_dingdan_list.html?lxid=4" v-bind:class="['caidan_putong',xianshi4 ? 'caidan_xuanzhong' : '']">待交易</a>
+	<a  href="u_dingdan_list.html?lxid=5" v-bind:class="['caidan_putong',xianshi5 ? 'caidan_xuanzhong' : '']">待评论</a>
+	<a  href="u_dingdan_list.html?lxid=0" v-bind:class="['caidan_putong',xianshi0 ? 'caidan_xuanzhong' : '']">全部</a>
+</div>
+<div class="huise10"></div>
+
+<div v-for="dd in dingdans">	
+<!--订单-->
+<div class="dingdan">
+	
+	<!--订单-单号栏目-->
+	<div class="dingdan_danhao">
+		<p class="dingdan_danhao_zuo">单号：{{dd.danhao}}</p>
+		<p class="dingdan_danhao_you">
+			<label v-if="dd.zt==2">待付款</label>
+			<label v-if="dd.zt==3">待发货</label>
+			<label v-if="dd.zt==4">待收货</label>
+		</p>
+	</div>
+	
+	<div v-for="cp in dd.cps">
+	<!--订单产品-->
+	<div class="dingdan_chanpin">
+		<div class="dingdan_chanpin_tupian">
+			<img v-bind:src="cp.tupian" class="dingdan_chanpin_tupian_img"/>
+		</div>
+		<div class="dingdan_chanpin_xinxi">
+			<div class="dingdan_chanpin_xinxi_biaoti">
+			{{cp.name}}
+			</div>
+			<div class="dingdan_chanpin_xinxi_fujia">
+				剩余：{{cp.kucun}}
+			</div>
+			<div class="dingdan_chanpin_xinxi_shuliang">
+				<div class="dingdan_chanpin_xinxi_shuliang_zuo">
+					¥ {{cp.price}}
+				</div>
+				<div class="dingdan_chanpin_xinxi_shuliang_you">
+					数量 X {{cp.shuliang}}
+				</div>
+			</div>
+			<div class="dingdan_chanpin_xinxi_biaoti">
+			<a v-bind:href="'u_dingdan_chanpin_pingjia.html?danhao='+dd.danhao+'&cp_id='+cp.cp_id" v-if="dd.zt==5&&cp.pinglun_yn=='否'">
+			我要评价</a>
+			</div>			
+		</div>
+	</div>
+	</div><!--cp for-->
+	
+	
+	<!--订单-结算信息-->
+	<div class="dingdan_jiesuan">
+		<p class="dingdan_jiesuan_txt1">{{dd.chanpinshu}} 件产品 | 总金额：   </p>
+		<p class="dingdan_jiesuan_txt2">¥ {{dd.feiyong}}</p>
+		<p class="dingdan_jiesuan_txt1"></p>
+	</div>
+		
+	<!--订单-操作信息-->
+	<div class="dingdan_caozuo">
+		<a v-if="dd.zt==2" class="dingdan_caozuo_xiangmu" @click="quxiao(dd.danhao)">
+		取消订单</a>
+		<a v-if="dd.zt==2"  class="dingdan_caozuo_xiangmu" @click="fukuan(dd.danhao)">
+		付款</a>
+		<a v-if="dd.zt==4"   style="cursor: pointer;" class="dingdan_caozuo_xiangmu" @click="shouhuo(dd.danhao)">
+		确认收货</a>
+		</div>
+</div>
+</div>
+	
+</div>
+
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  xianshi0:false,
+		  xianshi2:false,
+		  xianshi3:false,
+		  xianshi4:false,
+		  xianshi5:false,
+		  dingdans:[]
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.caidan();
+		  this.GetDingdans();
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  //顶部菜单状态的切换
+		  caidan:function(){
+			  if(cs1_zhi==2||cs1_zhi=="2"){
+				  this.xianshi2 =true;
+			  }
+			  if(cs1_zhi==3||cs1_zhi=="3"){
+				  this.xianshi3 =true;
+			  }
+			  if(cs1_zhi==4||cs1_zhi=="4"){
+				  this.xianshi4 =true;
+			  }
+			  if(cs1_zhi==5||cs1_zhi=="5"){
+				  this.xianshi5 =true;
+			  }
+			  if(cs1_zhi==0||cs1_zhi=="0"){
+				  this.xianshi0 =true;
+			  }			  
+		  },
+		  //加载购物车产品
+		  GetDingdans:function(){
+			axios.get('http://localhost/shop/public/api/v1/Goods',
+						{
+							params:{
+								cs_uid:localStorage.u_id,    //参数1
+								cs_lxid:cs1_zhi             //参数2
+							}
+						}				 
+					 )
+			  .then(function (response) {
+				//response.data 返回值,下面插入你要执行的代码
+				this.dingdans = response.data;
+			  }.bind(this))
+			  .catch(function (error) {
+				console.log(error);
+			});				  
+		  },
+		  
+		  //取消订单
+		  quxiao:function(danhao){
+			  if(confirm("确定要取消订单？")){
+					axios.get('http://localhost/shop/public/api/v1/Goods',
+								{
+									params:{
+										cs_uid:localStorage.u_id,    //参数1
+										cs_danhaoid:danhao //参数2
+									}
+								}				 
+							 )
+					  .then(function (response) {
+						//response.data 返回值,下面插入你要执行的代码
+						console.log(response.data);
+						location.reload();
+						
+					  }.bind(this))
+					  .catch(function (error) {
+						console.log(error);
+					});					  
+			  }
+		  },
+		  
+		  //付款  wx_dingdan_fukuan.asp
+		  fukuan:function(danhao){
+			  if(confirm("确定要去付款？")){
+					axios.get('http://localhost/shop/public/api/v1/Buy_trading/id',
+								{
+									params:{
+										cs_uid:localStorage.u_id,    //参数1
+										cs_danhaoid:danhao //参数2
+									}
+								}				 
+							 )
+					  .then(function (response) {
+						//response.data 返回值,下面插入你要执行的代码
+						console.log(response.data);
+						location.reload();
+						
+					  }.bind(this))
+					  .catch(function (error) {
+						console.log(error);
+					});					  
+			  }
+		  },
+		  
+		  //收货 wx_dingdan_shouhuo.asp
+		  shouhuo:function(danhao){
+			  if(confirm("确定要收货？")){
+					axios.get('http://localhost/shop/public/api/v1/Buy_trading/id',
+								{
+									params:{
+										cs_uid:localStorage.u_id,    //参数1
+										cs_danhaoid:danhao //参数2
+									}
+								}				 
+							 )
+					  .then(function (response) {
+						//response.data 返回值,下面插入你要执行的代码
+						console.log(response.data);
+						location.reload();
+						
+					  }.bind(this))
+					  .catch(function (error) {
+						console.log(error);
+					});					  
+			  }
+		  },
+	  },		
+	})
+</script>
+	
+</body>
+</html>

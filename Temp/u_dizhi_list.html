@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>黄菊华：H5+CSS3商城界面实战-购物车</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/huiyuan_dizhi_liebiao.css">
+	<script src="vue2.2.2.min.js" ></script>
+	<script src="axios.min.js"></script>
+</head>
+
+<body>
+<div id="app">
+<!--购物车-顶部导航-->
+<div class="dingbu">
+	<a href="u_index.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">地址列表</p>
+</div>
+
+<div class="dizhi_liebiao">
+	
+	<div v-for="dizhi in dizhis">
+	<div class="dizhi_liebiao_xiangmu">
+		<div class="dizhi_liebiao_xiangmu_zuo">
+			<div class="dizhi_liebiao_xiangmu_zuo_txt1">
+				{{dizhi.xingming}}  {{dizhi.shouji}}
+			</div>
+			<div class="dizhi_liebiao_xiangmu_zuo_txt2">
+				{{dizhi.diqu1}} 
+				{{dizhi.diqu2}}
+				{{dizhi.diqu3}}
+				{{dizhi.dizhi}}
+			</div>
+			<div class="dizhi_liebiao_xiangmu_zuo_txt3" v-if="dizhi.yn_moren==1">
+				 <div class="dizhi_liebiao_xiangmu_zuo_moren">默认地址</div>
+			</div>
+		</div>
+		<div class="dizhi_liebiao_xiangmu_you">
+			<a v-bind:href="'u_dizhi_xiugai.html?id='+dizhi.dizhi_id">
+				<img src="img/xiugai.png" class="dizhi_liebiao_xiangmu_you_img" />
+			</a>
+			
+			<a v-on:click="del('u_dizhi_del.html?id='+dizhi.dizhi_id)" style="cursor: pointer;">
+				<img src="img/del.png" class="dizhi_liebiao_xiangmu_you_img" />
+			</a>
+		</div>
+	</div>
+	<div class="height10"></div>
+	</div> <!--for-->
+
+</div>
+	
+<div class="caozuo">
+	<div class="caozuo_tianjia">
+		<a  class="caozuo_tianjia_btn" href="u_dizhi_add.html">添加新地址</a>
+	</div>	
+</div>
+
+</div> <!--app-->
+	
+	
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  dizhis:[]
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.GetDizhis();
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  GetDizhis:function(){
+				axios.get('http://vue.yaoyiwangluo.com/wx_dizhi_list_vue.asp',
+							{
+								params:{
+									cs_uid:localStorage.u_id
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					console.log(response.data);
+					this.dizhis = response.data;
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});				  
+		  },
+		  del:function(cs){
+			  if(confirm("确定是否要删除，删除后不可恢复！")){
+				  window.location.href = cs;
+			  }
+		  }
+		  
+	  },		
+	})
+</script>	
+
+</body>
+</html>

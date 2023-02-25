@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>黄菊华：H5+CSS3商城界面实战-购物车</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/huiyuan_denglu.css">
+	<script src="vue2.2.2.min.js" ></script>
+	<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<form @submit.prevent="tijiao" name="frm">
+	<div class="denglu">
+		<div class="denglu_mingcheng">欢迎登陆商城</div>
+		<div class="denglu_xiangmu">
+			<img src="img/yonghu.png" class="denglu_xiangmu_img" />
+			<input type="text" placeholder="请输入用户名" class="denglu_xiangmu_input" name="shouji" v-model="u.shouji">
+		</div>
+		<br>
+		<div class="denglu_xiangmu">
+			<img src="img/mima.png" class="denglu_xiangmu_img" />
+			<input type="text" placeholder="请输入密码" class="denglu_xiangmu_input" name="mima" v-model="u.mima">
+		</div>	
+		
+		<br>
+ 		<input type="submit"  class="denglu_putong" value="立即登陆"  style="border: 0;outline: none;">
+		
+ 
+		
+		<br>
+		<br>
+		<div class="denglu_qita">
+			<a href="xinwen_list.html?cs_lxid=10&cs_lxmc=帮助中心" class="denglu_qita_zuo">系统帮助</a>	
+			<a href="u_reg.html" class="denglu_qita_you">免费注册</a>	
+		</div>
+		
+		
+	</div>
+</form>		
+</div> <!--app-->	
+	
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  u:{}
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  tijiao:function(){
+			  if(this.u.shouji==undefined || this.u.mima==undefined){
+				  alert("请填写用户名或者密码");
+				  return false;
+			  }
+			  //提交信息
+			  //http://vue.yaoyiwangluo.com/wx_check_login_yonghu.asp?yhm=1&mm=2
+				axios.get('http://vue.yaoyiwangluo.com/wx_check_login_yonghu.asp',
+							{
+								params:{
+									yhm:this.u.shouji,    //参数1
+									mm:this.u.mima        //参数2
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					console.log(response);
+					console.log(response.data);
+					console.log(response.data.xinxi);
+					console.log(response.data.uid);
+					if(response.data.zt=="yes"){
+						alert("登录成功");
+						//写缓存信息
+						localStorage.u_login = "yes";
+						localStorage.u_id = response.data.uid;
+						window.location = "u_index.html";
+					}
+					if(response.data.zt=="no"){
+						alert(response.data.xinxi);
+					}
+					
+
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});	
+			  
+		  }
+	  },		
+	})
+</script>
+	
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>黄菊华：H5+CSS3商城界面实战-购物车</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/chanpin_pinglun.css">
+	<script src="vue2.2.2.min.js" ></script>
+	<script src="axios.min.js"></script>		
+
+<style>
+*{margin:0;padding:0;list-style-type:none;font-family: 'Microsoft Yahei';}
+body{color:#666;font-size: 14px;}
+/* star */
+#star{position:relative;margin:10px auto;height:24px; margin-top: 10px; padding-left: 10px;}
+#star ul,#star span{float:left;display:inline;height:19px;line-height:19px;}
+#star ul{margin:0 10px;}
+#star li{float:left;width:24px;cursor:pointer;text-indent:-9999px;background:url(img/star.png) no-repeat;}
+#star strong{color:#f60;padding-left:10px;}
+#star li.on{background-position:0 -28px;}
+#star p{position:absolute;top:20px;width:159px;height:60px;display:none;background:url(img/icon.gif) no-repeat;padding:7px 10px 0;}
+#star p em{color:#f60;display:block;font-style:normal;}
+</style>
+	
+</head>
+
+<body>
+<div id="app"> 
+<form @submit.prevent="pl" name="frm">
+	
+	<script>
+	//下面代码获取页面的参数
+	urlinfo=window.location.href; //获取当前页面的url
+	//document.write(urlinfo)
+	len=urlinfo.length;//获取url的长度
+	offset=urlinfo.indexOf("?");//设置参数字符串开始的位置
+	neirong=urlinfo.substr(offset+1,len)//取出参数字符串 这里会获得类似“id=1”这样的字符串
+	neirong1=neirong.split("&");//对获得的参数字符串按照“=”进行分割
+
+	cs1=neirong1[0].split("=")
+	cs1_mc=cs1[0];//得到参数名字
+	cs1_zhi=cs1[1];//得到参数值
+
+	cs2=neirong1[1].split("=")
+	cs2_mc=cs2[0];//得到参数名字
+	cs2_zhi=decodeURI(cs2[1]);//得到参数值		
+	
+	
+	</script>
+	
+<!--购物车-顶部导航-->
+<div class="dingbu">
+	<a href="u_dingdan_list.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">产品评论</p>
+</div>
+
+<script type="text/javascript"> 
+window.onload = function (){
+	var oStar = document.getElementById("star");
+	var aLi = oStar.getElementsByTagName("li");
+	
+	var oUl = oStar.getElementsByTagName("ul")[0];
+	var oSpan = oStar.getElementsByTagName("span")[1];
+	var oP = oStar.getElementsByTagName("p")[0];
+	var i = iScore = iStar = 0;
+	var aMsg = [
+				"很不满意|差得太离谱，与卖家描述的严重不符，非常不满",
+				"不满意|部分有破损，与卖家描述的不符，不满意",
+				"一般|质量一般，没有卖家描述的那么好",
+				"满意|质量不错，与卖家描述的基本一致，还是挺满意的",
+				"非常满意|质量非常好，与卖家描述的完全一致，非常满意"
+				]
+	for (i = 1; i <= aLi.length; i++){
+		aLi[i - 1].index = i;
+	 
+		//鼠标移过显示分数
+		aLi[i - 1].onmouseover = function (){
+			fnPoint(this.index);
+		 
+			//浮动层显示
+			oP.style.display = "block";
+			//计算浮动层位置
+			oP.style.left = oUl.offsetLeft + this.index * this.offsetWidth - 104 + "px";
+			//匹配浮动层文字内容
+			oP.innerHTML = "<em><b>" + this.index + "</b> 星 " + aMsg[this.index - 1].match(/(.+)\|/)[1] + "</em>" + aMsg[this.index - 1].match(/\|(.+)/)[1]
+		};
+		
+		//鼠标离开后恢复上次评分
+		aLi[i - 1].onmouseout = function (){
+			fnPoint();
+			//关闭浮动层
+			oP.style.display = "none"
+		};
+		
+		//点击后进行评分处理
+		aLi[i - 1].onclick = function (){
+			iStar = this.index;
+			oP.style.display = "none";
+			oSpan.innerHTML = "<strong>" + (this.index) + " 星</strong> (" + aMsg[this.index - 1].match(/\|(.+)/)[1] + ")"
+		}
+	}
+	
+	//评分处理
+	function fnPoint(iArg){
+		//分数赋值
+		iScore = iArg || iStar;
+ 		for (i = 0; i < aLi.length; i++) aLi[i].className = i < iScore ? "on" : "";	
+	}
+	
+
+	
+}
+
+ 
+</script>
+
+<div id="star"> <span>商品评价</span>
+  <ul>
+    <li><a href="javascript:;">1</a></li>
+    <li><a href="javascript:;">2</a></li>
+    <li><a href="javascript:;">3</a></li>
+    <li><a href="javascript:;">4</a></li>
+    <li><a href="javascript:;">5</a></li>
+  </ul>
+  <span></span>
+  <p></p>
+</div> 
+
+	
+
+
+<div class="pinglun_neirong">
+	<textarea rows="5" id="neirong" placeholder="商品满足你的期待吗？说说你的使用心得，分享给想买的他们吧" class="pinglun_neirong_txt"></textarea>
+</div>
+	
+<div class="pinglun_xing">
+	<p class="pinglun_xing_biaoti">匿名评价</p>
+	<p class="pinglun_xing_tupian" style="padding-left: 10px;">
+		<input type="checkbox" id="niming" class="pinglun_xing_tupian_img" >
+	</p>
+</div>	
+	
+	
+<!--div class="pinglun_tupian">
+	<div class="pinglun_tupian_biaoti">图片上传</div>
+	<div class="pinglun_tupians">
+		<img src="tupian/cp04.jpg" class="pinglun_tupians_img" />
+		<img src="tupian/cp05.jpg" class="pinglun_tupians_img" />
+		<img src="img/add.jpg"  class="pinglun_tupians_img" >
+	</div>
+</div-->
+	
+	<div class="caozuo">
+		<div class="caozuo_baocun">
+			
+			<input class="caozuo_baocun_btn" type="submit" value="发表评论" >
+		</div>
+	</div>
+	
+	
+	
+	
+</form>
+</div> <!--app-->
+	
+	
+
+	<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+			mc:"",
+		    neirong:""
+	  },
+	  mounted:function(){
+		  
+	  },
+	  methods:{
+		  pl:function(){
+				var niming = 0;
+				if(document.getElementById("niming").checked==true)
+				{	
+					niming = 1
+				}else{
+					niming = 0
+				}
+				var neirong = document.getElementById("neirong").value;
+
+				console.log("单号："+cs1_zhi+" | 产品id："+cs2_zhi)
+				console.log(iScore+" | " +niming+" | " +  neirong)
+			  
+			//提交评论信息  
+			axios.get('http://vue.yaoyiwangluo.com/wx_AddPinLun0.asp',
+					 {
+						   params:{
+							    cpid:cs2_zhi,
+							    user_id :localStorage.u_id,
+								xx:iScore,
+							    pinlun_neirong:neirong,
+							    danhao:cs1_zhi
+						   }
+					  }
+					 )
+			.then(function(response) {
+				console.log(response);
+				console.log(response.data.xinxi);
+				//根据返回信息跳转
+				if(response.data.zt=="yes"){
+				   alert('评论成功!');
+				   window.location='u_dingdan_list.html?lxid=0';
+				}
+				if(response.data.zt=="no"){
+				   alert(response.data.xinxi);
+				   //window.location='index.html';
+				}				
+
+ 			})
+			.catch(function(error) {
+				//错误处理
+				console.log(error);
+			});
+		
+		  },
+		  
+	  }
+	})
+	</script>
+	
+	
+	
+</body>
+</html>

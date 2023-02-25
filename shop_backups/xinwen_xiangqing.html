@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>黄菊华：H5+CSS3商城界面实战-购物车</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/xnixi_xiangqing.css">	
+	<script src="vue2.2.2.min.js"></script>
+	<script src="axios.min.js"></script>
+</head>
+
+<body>
+<script>
+	//下面代码获取页面的参数
+	urlinfo = window.location.href  //获取当前页面的url
+	console.log(urlinfo);
+	len = urlinfo.length; //获取url的长度
+	offset =urlinfo.indexOf("?");//设置参数字符串开始的位置
+	neirong = urlinfo.substr(offset+1,len);//取出参数字符串 这里会获得类似“id=1”这样的字符串
+	console.log(neirong);
+	neirong1 = neirong.split("&");//对获得的参数字符串按照“=”进行分割
+	
+	cs1 = neirong1[0].split("=");
+	cs1_mc = cs1[0];//得到参数名字
+	cs1_zhi = cs1[1];//得到参数值
+	console.log("参数1的名称："+cs1_mc + " | 参数1的值："+cs1_zhi);
+	
+	cs2 = neirong1[1].split("=");
+	cs2_mc = cs2[0];//得到参数名字
+	cs2_zhi = decodeURI(cs2[1]);//得到参数值
+	console.log("参数2的名称："+cs2_mc + " | 参数2的值："+cs2_zhi);	
+	
+</script>	
+	
+<div id="app">
+	<!--购物车-顶部导航-->
+	<div class="dingbu">
+		<a href="javascript:history.go(-1)" class="dingbu_lianjie">
+			<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+		</a>
+		<p class="dingbu_biaoti">{{mc}}</p>
+	</div>
+
+
+	<div v-html="neirong" class="neirong"></div>
+	
+</div>
+	
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  mc:"",
+		  neirong:""
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.GetXiangqing();
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  GetXiangqing:function(){
+			    this.mc= cs2_zhi;
+				axios.get(`http://vue.yaoyiwangluo.com/wx_news_info.asp`,
+							{
+								params:{
+									cs_xxid:cs1_zhi    //参数1
+								}
+							}				 
+						 )
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					this.neirong = response.data.neirong;
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});	
+		  }
+	  },		
+	})
+</script>
+	
+
+
+</body>
+</html>

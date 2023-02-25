@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/dibu_caidan.css">	
+<link rel="stylesheet" href="css/chanpin_liebiao.css">		
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<form @submit.prevent="chaxun" name="frm">
+<!--购物车顶部导航-->
+<div class="dingbu">
+	<a href="index.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">产品列表</p>
+</div>
+<!--查询功能-->
+<div class="chaxun">
+  <input class="chaxun_neirong" id="chaxun_neirong" type="text" placeholder=" 请输入要查询的内容" />
+  <button class="chaxun_anniu">查询</button>
+</div>
+	
+<!--查询条件-->	
+<div class="chaoxun_tiaojian">	
+	<a class="chaoxun_tiaojian_xiaoliang"  v-on:click="tiaozhuan(px_shijian)" >
+		<p class="chaoxun_tiaojian_zhonghe_txt">时间</p>
+		<p class="jiantou_xia" v-if="px_shijian=='up'"></p><!--查询条件-向下箭头-->
+		<p class="jiantou_shang"  v-if="px_shijian=='down'"></p><!--查询条件-向上箭头-->
+	</a>
+	<a class="chaoxun_tiaojian_xiaoliang" v-on:click="tiaozhuan_price(px_price)" >
+		<p class="chaoxun_tiaojian_xiaoliang_txt">按价格</p>
+		<p class="jiantou_xia" v-if="px_price=='up'"></p><!--查询条件-向下箭头-->
+		<p class="jiantou_shang"  v-if="px_price=='down'"></p><!--查询条件-向上箭头-->
+	</a>
+	<a class="chaoxun_tiaojian_price">
+		<p class="chaoxun_tiaojian_price_txt">按销量</p>
+		<p class="jiantou_shang"></p><!--查询条件-向上箭头-->
+	</a>	
+</div>
+
+	
+	
+<div class="chanpin0">
+	
+<a class="chanpin" v-bind:href="'chanpin_xiangqing.html?id='+cp.cp_id+'&mc='+cp.cp_name"  v-for="cp in chanpins">
+	<div class="chanpin_tupian">
+		<img  v-bind:src="cp.cp_tupian" class="chanpin_tupian_img" />
+	</div>
+	<div class="chanpin_xinxi">
+		<div class="chanpin_xinxi_biaoti">{{cp.cp_name}}</div>
+		<div class="chanpin_xinxi_price">¥ {{cp.price}}</div>
+		<!--
+		<div class="chanpin_xinxi_haopin">
+			剩余：{{cp.kucun}} 个 | 售出：{{cp.yixiaoshou}} 个  
+		</div>
+		-->
+	</div>
+</a>
+
+</div>
+
+<!--底部导航菜单-->
+<div class="dibu_caidan" id="dl_yes">
+	<a href="index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/a-on.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti dibu_caidan_xiangmu_biaoti_xuanzhong">首页</p>
+	</a>
+	<a href="chanpin_fenlei.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/b-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">分类</p>
+	</a>
+	<a href="gouwuche.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/c-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">购物车</p>
+	</a>
+	<a href="u_index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/d-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">会员</p>
+	</a>
+</div>
+
+<div class="dibu_caidan" id="dl_no">
+	<a href="index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/a-on.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti dibu_caidan_xiangmu_biaoti_xuanzhong">首页</p>
+	</a>
+	<a href="chanpin_fenlei.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/b-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">分类</p>
+	</a>
+	<a onClick="denglu()" class="dibu_caidan_xiangmu" style="cursor:pointer;">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/c-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">购物车</p>
+	</a>
+	<a onClick="denglu()" class="dibu_caidan_xiangmu" style="cursor: pointer">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/d-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">会员</p>
+	</a>
+</div>
+	<script>
+		function denglu(){
+			if(confirm("请登录")){
+				window.location.href = "u_login.html"
+			}
+		}
+		
+		if(localStorage.u_login=="yes"){
+			document.getElementById("dl_yes").style.display="";
+			document.getElementById("dl_no").style.display="none";
+		}else{
+			document.getElementById("dl_yes").style.display="none";
+			document.getElementById("dl_no").style.display="";	
+		}
+	
+	</script>
+	
+</form>	
+</div><!--app-->
+
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  chanpins:[],
+		  px_shijian:"down",
+		  px_price:"down"
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.cps();
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  //页面初始化，加载产品
+		  cps:function(){
+			axios.get('http://localhost/shop/public/api/v1/Goods')
+			  .then(function (response) {
+				//response.data 返回值,下面插入你要执行的代码
+				this.chanpins = response.data;
+			  }.bind(this))
+			  .catch(function (error) {
+				console.log(error);
+				console.log("chanpins:Error");
+			});					  
+		  },
+		  
+		  //关键词查询函数
+		  cps_cs:function(cs){
+				axios.get('http://localhost/shop/public/api/v1/Goods',
+							 {
+								params:{cs_cpmc:cs}
+							  }							 
+						 )
+				  .then(response => {
+					console.log(response.data)
+					this.chanpins = response.data
+				  })
+				  .catch(function (error) {
+					console.log(error);
+					console.log("chaxun:Error");
+				});
+			},
+		  chaxun:function(){
+			  console.log("查询的内容："+document.getElementById("chaxun_neirong").value);
+			  this.cps_cs(document.getElementById("chaxun_neirong").value);
+		  },	
+			  
+		  //产品排序 函数
+		  cps_paixu:function(cs1,cs2){
+				axios.get('http://localhost/shop/public/api/v1/Goods',
+							 {
+								params:{
+									cs_pxmc:cs1,
+									cs_pxzhi:cs2
+								}
+							  }							 
+						 )
+				  .then(response => {
+					console.log(response.data)
+					this.chanpins = response.data
+				  })
+				  .catch(function (error) {
+					console.log(error);
+					console.log("fenlei:Error");
+				});
+		  },  
+		 tiaozhuan:function(cs){
+			 var jieguo = "";
+			 if(cs=="down"){
+				 jieguo = "up";
+				 this.px_shijian = "up";
+			 }
+			 if(cs=="up"){
+				 jieguo = "down";
+				 this.px_shijian = "down";
+			 }
+			 this.cps_paixu("shijian",this.px_shijian);
+		 },
+		  tiaozhuan_price:function(cs){
+			var jieguo =""
+			if(cs=="down"){
+				jieguo="up";
+				this.px_price ="up";
+			}
+			if(cs=="up"){
+				jieguo="down";
+				this.px_price = "down";
+			}
+			console.log("chanpin_list.html?px_price="+jieguo);
+			//按时间排序
+			this.cps_paixu("price",this.px_price);
+		  },	 
+ 
+	  },		
+	})
+</script>
+</body>
+</html>

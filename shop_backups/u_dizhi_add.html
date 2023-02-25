@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>黄菊华：H5+CSS3商城界面实战-购物车</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/huiyuan_dizhi_tianjia.css">	
+	<script src="vue2.2.2.min.js" ></script>
+	<script src="axios.min.js"></script>	
+	<script src="v-diqu.js"></script>
+</head>
+
+<body>
+<div id="app">
+<form @submit.prevent="tijiao" name="frm"	>
+<!--购物车-顶部导航-->
+<div class="dingbu">
+	<a href="u_dizhi_list.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">添加地址</p>
+</div>
+
+<div class="dizhi">
+	
+	<div class="dizhi_xiangmu">
+		<div class="dizhi_xiangmu_zuo">收货人</div>
+		<div class="dizhi_xiangmu_you">
+			<input type="text" class="dizhi_xiangmu_you_input" placeholder="请输入收货人" name="xingming" v-model="xingming" />
+		</div>
+	</div>
+
+	<div class="dizhi_xiangmu">
+		<div class="dizhi_xiangmu_zuo">手机号</div>
+		<div class="dizhi_xiangmu_you">
+			<input type="text" class="dizhi_xiangmu_you_input" placeholder="请输入手机号" name="shouji" v-model="shouji" />
+		</div>
+	</div>
+
+	<div class="dizhi_xiangmu">
+		<div class="dizhi_xiangmu_zuo">所在地区</div>
+		<div class="dizhi_xiangmu_you">
+			
+			<div id="bigclass" style="float:left">
+				<select name="select1"  v-model="select1" onChange="GetDiqu2(this.value)" >
+					<option value="0">省级</option>
+					<option v-bind:value="diqu1.myid"  v-for="diqu1 in diqu1s" >
+						{{diqu1.fenlei_mingcheng}}
+					</option>
+				</select>
+			</div>	
+			
+			<div id="subclass2"  style="float:left">
+				<select name="select2"  v-model="select2" onChange="GetDiqu3(this.value)" >
+					<option value="0">地级</option>
+				</select>	
+			</div>
+			
+			<div id="subclass3"  style="float:left">
+				<select name="select3"  v-model="select3" >
+					<option value="0">县级</option>
+				</select>	
+			</div>
+			
+			
+		</div>
+	</div>
+	
+	<div class="dizhi_xiangmu">
+		<div class="dizhi_xiangmu_zuo">详细地址</div>
+		<div class="dizhi_xiangmu_you">
+			<input type="text" class="dizhi_xiangmu_you_input" placeholder="请输入详细地址" name="dizhi" v-model="dizhi" />
+		</div>
+	</div>
+	
+	<div class="dizhi_xiangmu">
+		<div class="dizhi_xiangmu_zuo">设为默认</div>
+		<div class="dizhi_xiangmu_moren">
+			<input type="checkbox" name="mr" v-model="mr" id="moren" />
+			<label for="moren"><em></em></label>
+		</div>
+	</div>
+	
+</div>
+	
+	
+<div class="caozuo">
+	<div class="caozuo_baocun">
+		<button class="caozuo_baocun_btn">保存此地址</button>
+	</div><br>
+</div>
+	
+</form> 
+</div><!--app-->
+	
+
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		diqu1s:[],  
+		select1:"0",
+		select2:"0",
+		select3:"0",  
+
+		xingming:"",
+		shouji:"",
+		dizhi:"",
+		mr:true
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.GetDiqu1();
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  //加载1级地区分类
+		  GetDiqu1:function(){
+				axios.get('http://vue.yaoyiwangluo.com/v-diqu1.asp')
+				  .then(function (response) {
+					//response.data 返回值,下面插入你要执行的代码
+					//console.log(response.data);
+					this.diqu1s = response.data
+				  }.bind(this))
+				  .catch(function (error) {
+					console.log(error);
+				});			  
+		  },
+		  //提交数据
+		  tijiao:function(){
+			  console.log(this.xingming);
+			  if(this.xingming==""||this.shouji==""||this.dizhi==""||document.frm.select1.value=="0"||document.frm.select2.value=="0"){
+				  alert("请填写内容和选择地址");
+				  return false;
+			  }else{
+				  var diqu2 = "";
+				  var diqu2s = new Array();
+				  diqu2s = document.frm.select2.value.split("|");
+				  console.log(diqu2s[1]);
+				  //提交数据
+					axios.get('http://vue.yaoyiwangluo.com/wx_dizhi_add.asp',
+								{
+									params:{
+										cs_uid:localStorage.u_id,
+										cs_xingming:this.xingming,
+										cs_shouji:this.shouji,
+										cs_diqu1:document.frm.select1.value,
+										cs_diqu2:diqu2s[1],
+										cs_diqu3:document.frm.select3.value,
+										cs_dizhi:this.dizhi,
+										cs_moren:this.mr
+									}
+								}				 
+							 )
+					  .then(function (response) {
+						//response.data 返回值,下面插入你要执行的代码
+						console.log(response.data);
+						console.log(response.data.xinxi);
+						if(response.data.zt=="yes"){
+							alert("新地址录入成功");
+							window.location = "u_dizhi_list.html";
+						}
+						if(response.data.zt=="no"){
+							alert(response.data.xinxi);
+						}						
+
+					  }.bind(this))
+					  .catch(function (error) {
+						console.log(error);
+					});					  
+			  }
+		  }
+		  
+	  },		
+	})
+</script>
+	
+
+</body>
+</html>

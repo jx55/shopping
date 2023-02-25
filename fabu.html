@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/toubu_fanhui.css">
+<link rel="stylesheet" href="css/fabu.css">
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<form @submit.prevent="tijiao" name="frm" >
+<!--头部返回，返回首页-->
+<div class="dingbu">
+	<a href="index.html" class="dingbu_lianjie">
+		<img src="img/back.png"  alt="" class="dingbu_lianjie_img" />
+	</a>
+	<p class="dingbu_biaoti">发布商品</p>
+</div><br>
+
+<!--发布商品部分-->
+<div class="fabu" style="border-top:1px solid #f2f2f2;">
+	<div class="fabu_biaoti">商品名称</div>
+	<div class="fabu_shuru">
+		<input type="text" placeholder="请输入商品名称" class="fabu_shuru_input"  name="name" v-model="fb.name" />
+	</div>
+</div>
+
+<div class="fabu">
+	<div class="fabu_biaoti">商品价格</div>
+	<div class="fabu_shuru">
+		<input type="text" placeholder="请输入商品价格" class="fabu_shuru_input" name="price" v-model="fb.price" />
+	</div>
+</div>
+<div class="fabu">
+	<div class="fabu_biaoti">商品数量</div>
+	<div class="fabu_shuru">
+		<input type="text" placeholder="请输入商品数量" class="fabu_shuru_input" name="num" v-model="fb.num" />
+	</div>
+</div>
+<!--
+<div>
+	<img class="fabu_img"  src="img/ban2.jpg"/> 
+</div>
+-->
+<div class="fabu">
+	<div class="fabu_biaoti">商品照片</div>
+	<div class="file">
+		<input type="file" name="picture" v-model="fb.picture"> 
+	</div>
+</div>
+<div class="fabu">
+	<div class="fabu_biaoti">商品描述</div>
+</div>
+<div class="fabu">
+	<div class="fabu_area">
+		<textarea cols="60" rows="11" placeholder="请输入具体的商品描述" name="des" v-model="fb.des"></textarea>
+	</div>
+</div>
+
+<!--发布确认-->
+<div  class="fabu_queren">
+	<button class="fabu_btn">确认发布</button>
+</div>
+</form>	
+</div>
+
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  fb:{}
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+
+	  },
+	  //自定义的函数（方法）
+	  methods:{
+		  tijiao:function(){
+			  //alert("提交数据");
+			  console.log(this.fb);
+			  
+			axios.get('http://localhost/shop/public/api/v1/Goods',
+				{
+					params:{
+						name:this.fb.name,
+						price:this.fb.price,
+						images:this.fb.pictrue,
+						description:this.fb.des
+					}
+				}				 
+			 )
+			  .then(function (response) {
+				//response.data 返回值,下面插入要执行的代码
+			  }.bind(this))
+			  .catch(function (error) {
+				console.log(error);
+				console.log("fb:Error");
+			});	
+	
+		  }
+	  },		
+	})
+</script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>校园二手交易平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/chanpin_fenlei.css">
+<link rel="stylesheet" href="css/dibu_caidan.css">
+<script src="vue2.2.2.min.js" ></script>
+<script src="axios.min.js"></script>	
+</head>
+
+<body>
+<div id="app">
+<!--商品分类-->
+<div class="fenlei"> 
+  <!--商品分类-左侧-->
+  <div class="fenlei_zuo">
+	<div v-for="fl in fenleis">
+   	 	<div class="fenlei_zuo_xiangmu" v-bind:class="fl.id==flid?'fenlei_zuo_xuanzhong':''"  v-on:click="cps_cs(fl.id)" >
+			{{fl.name}}
+		</div>
+    </div>
+  </div>
+  
+  <!--商品分类-右侧-->
+  <div class="fenlei_you">
+    <div class="cp2_zuixin"> 
+	  <a v-bind:href="'chanpin_xiangqing.html?id='+cp.cp_id+'&mc='+cp.cp_name" class="cp2_lianjie" v-for="cp in chanpins"> 
+		<img  v-bind:src="cp.cp_tupian" class="cp2_img" />
+        <p class="cp2_mc">{{cp.cp_name}}</p>
+        <p class="cp_mc2">¥ {{cp.price}}</p>
+      </a>
+	  </div>
+  </div>
+</div>
+
+
+<!--底部导航菜单-->
+<div class="dibu_caidan" id="dl_yes">
+	<a href="index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/a-on.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti dibu_caidan_xiangmu_biaoti_xuanzhong">首页</p>
+	</a>
+	<a href="chanpin_fenlei.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/b-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">分类</p>
+	</a>
+	<a href="gouwuche.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/c-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">购物车</p>
+	</a>
+	<a href="u_index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/d-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">我的</p>
+	</a>
+</div>
+
+
+<div class="dibu_caidan" id="dl_no">
+	<a href="index.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/a-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti ">首页</p>
+	</a>
+	<a href="chanpin_fenlei.html" class="dibu_caidan_xiangmu">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/b-on.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti dibu_caidan_xiangmu_biaoti_xuanzhong">分类</p>
+	</a>
+	<a onClick="denglu()" class="dibu_caidan_xiangmu" style="cursor:pointer;">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/c-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">购物车</p>
+		<!--p class="gouwucheshu"></p-->
+	</a>
+	<a onClick="denglu()" class="dibu_caidan_xiangmu" style="cursor: pointer">
+		<p class="dibu_caidan_xiangmu_tupian"><img src="img/d-off.png" class="dibu_caidan_xiangmu_tupian_img"></img></p>
+		<p class="dibu_caidan_xiangmu_biaoti">我的</p>
+	</a>
+</div>
+	<script>
+		function denglu(){
+			if(confirm("请登录")){
+				window.location.href="u_login.html"
+			}
+		}
+		if(localStorage.u_login=="yes"){
+			document.getElementById("dl_yes").style.display="";
+			document.getElementById("dl_no").style.display="none";
+		}else{
+			document.getElementById("dl_yes").style.display="none";
+			document.getElementById("dl_no").style.display="";	
+		}
+	</script>
+</div><!--app-->
+
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		  chanpins:[],
+		  fenleis:[],
+		  flid:0
+	  },
+	  //页面初始化要执行的
+	  mounted:function(){
+		  this.getCps();
+		  this.GetFeilei();
+	  },
+	  methods:{
+		  //页面初始化加载产品
+		  getCps:function(){
+			  var data=[
+				  {cp_id: 654,
+					cp_name: "手机1",
+					cp_tupian: "tupian/shouji1.jpg",
+					price: "1250"},
+				  {cp_id: 656,
+					cp_name: "手机2",
+					cp_tupian: "tupian/shouji2.jpg",
+					price: "2225"},
+				  {cp_id: 654,
+					cp_name: "手机3",
+					cp_tupian: "tupian/shouji3.jpg",
+					price: "1205"},
+					{cp_id: 653,
+					cp_name: "手机4",
+					cp_tupian: "tupian/shouji4.jpg",
+					price: "5125"},
+				  ];
+				  this.chanpins=data;
+		  },
+		  //加载分类产品
+		  GetFeilei:function(){
+			  var type=[
+				  {
+					id:10,
+					name:"手机"},
+				  {
+					  id:11,
+					  name:"电脑"
+				  },
+				  {
+					  id:12,
+					  name:"教材"
+				  },
+				  {
+					  id:13,
+					  name:"衣服"
+				  },
+				  {
+					  id:14,
+					  name:"体育"
+				  },
+				  {
+					  id:15,
+					  name:"洗漱品"
+				  },
+				  {
+					  id:16,
+					  name:"化妆品"
+				  }
+			  ];
+			  this.fenleis=type;
+		  },
+		  //根据选择的分类，加载该分类产品
+		  cps_cs:function(cs){
+			  this.flid = cs;
+			  if(cs==10){
+				  var data=[
+				  {cp_id: 654,
+					cp_name: "手机1",
+					cp_tupian: "tupian/shouji1.jpg",
+					price: "1250"},
+				  {cp_id: 656,
+					cp_name: "手机2",
+					cp_tupian: "tupian/shouji2.jpg",
+					price: "2225"},
+				  {cp_id: 654,
+					cp_name: "手机3",
+					cp_tupian: "tupian/shouji3.jpg",
+					price: "1205"},
+					{cp_id: 653,
+					cp_name: "手机4",
+					cp_tupian: "tupian/shouji4.jpg",
+					price: "5125"},
+				  ];
+			  }
+			  else if(cs==11){
+				  var data=[
+					  {cp_id: 658,
+						cp_name: "电脑1",
+						cp_tupian: "tupian/diannao1.jpg",
+						price: "5250"},
+					  {cp_id: 659,
+						cp_name: "电脑2",
+						cp_tupian: "tupian/diannao2.jpg",
+						price: "12225"},
+					  {cp_id: 660,
+						cp_name: "电脑3",
+						cp_tupian: "tupian/diannao3.jpg",
+						price: "8825"},
+						{cp_id: 666,
+						cp_name: "电脑4",
+						cp_tupian: "tupian/diannao4.jpg",
+						price: "18825"},
+				  ]
+			  }
+			  else if(cs==16){
+				  var data=[
+				  {cp_id: 661,
+					cp_name: "眼影盘",
+					cp_tupian: "tupian/yanyingpan.jpg",
+					price: "250"},
+				  {cp_id: 662,
+					cp_name: "口红1",
+					cp_tupian: "tupian/kouhong1.jpg",
+					price: "225"},
+				  {cp_id: 663,
+					cp_name: "口红2",
+					cp_tupian: "tupian/kouhong2.jpg",
+					price: "525"},
+				{cp_id: 663,
+					cp_name: "口红3",
+					cp_tupian: "tupian/kouhong3.jpg",
+					price: "885"},
+				  ]
+			  }
+			  else {
+				  var data=[]
+			  }
+			  this.chanpins=data;
+		  }
+	  },
+	  
+	  /*
+	  //自定义的函数（方法）
+	  methods:{
+		  //页面初始化加载产品
+		  getCps:function(){
+			axios.get('http://localhost/shop/public/api/v1/Goods')
+			  .then(function (response) {
+				//response.data 返回值,下面插入你要执行的代码
+				this.chanpins = response.data;
+			  }.bind(this))
+			  .catch(function (error) {
+				console.log(error);
+			});			  
+		  },
+		  //加载分类产品
+		  GetFeilei:function(){
+			axios.get('http://localhost/shop/public/api/v1/Goods')
+			  .then(function (response) {
+				//response.data 返回值,下面插入你要执行的代码
+				this.fenleis = response.data;
+			  }.bind(this))
+			  .catch(function (error) {
+				console.log(error);
+			});			  
+		  },
+		  
+		  //根据选择的分类，加载该分类产品
+		  cps_cs:function(cs){
+			this.flid = cs;
+			axios.get('http://localhost/shop/public/api/v1/Goods',
+						{
+							params:{
+								int_lxid1:cs
+							}
+						}				 
+					 )
+			  .then(function (response) {
+				//response.data 返回值,下面插入你要执行的代码
+				this.chanpins = response.data;
+			  }.bind(this))
+			  .catch(function (error) {
+				console.log(error);
+			});		  
+		  },
+	  },		
+	  */
+	})
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+@charset "utf-8";
+/* 会员首页 */
+
+/* 会员首页-头部用户信息 */
+.yonghu{display: flex; background-color: orangered;padding: 5px;}
+.yonghu_touxiang{padding: 5px;}
+.yonghu_touxiang_img{width: 70px;height: 70px;border-radius: 50%;box-shadow: 1px 1px 1px #f2f2f2;border: 1px solid white;}
+.yonghu_xinxi{padding: 5px;color: white;}
+.yonghu_xinxi_nicheng{}
+.yonghu_xinxi_dengji{padding: 5px 0 5px 0;font-size: 13px;}
+.yonghu_xinxi_shouji{}
+
+/* 会员首页-导航菜单 */
+/* 会员首页-导航菜单-我的订单 */
+.daohang{display: flex;align-items: center;padding: 10px;border-bottom: 1px solid #f2f2f2;}
+.daohang_img{width: 16px;height: 16px;}
+.daohang_biaoti{flex:1;padding-left: 10px;}
+.daohang_you{}
+/* 会员首页-导航菜单-我的订单-4个快捷菜单 */
+.caidan{display: flex;padding: 10px;}
+.caidan_lianjie{width: 25%;display: flex;flex-direction: column;align-items: center;text-decoration: none;position: relative;}
+.caidan_img{width:30px; }
+.caidan_mingcheng{font-size: 14px;color: dimgray;}
+.caidan_tishi{background-color: red;width: 14px;height: 14px;font-size: 12px;color: white;text-align: center;line-height: 14px;border-radius: 50%;position: absolute;bottom: 35px;left: 70%;}
+
+.daohang2{display: flex;align-items: center;padding: 10px;border-bottom: 1px solid #f2f2f2;}
+.daohang2_img{width: 16px;height: 16px;}
+.daohang2_biaoti{flex:1;padding-left: 10px;}
+.daohang2_you{width: 16px;height: 16px;}
+
+.huise10{background-color: #f2f2f2;height: 10px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
